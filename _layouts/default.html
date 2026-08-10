@@ -37,11 +37,12 @@
   <div class="wrap">
     <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <nav aria-label="주 메뉴">
-      <a href="{{ '/about/' | relative_url }}">회사소개</a>
-      <a href="{{ '/history/' | relative_url }}">걸어온 길</a>
+      <a href="{{ '/services/' | relative_url }}">서비스</a>
+      <a href="{{ '/projects/' | relative_url }}">수행실적</a>
       <a href="{{ '/insights/' | relative_url }}">인사이트</a>
       <a href="{{ '/briefing/' | relative_url }}">지원사업 브리핑</a>
-      <a href="{{ '/faq/' | relative_url }}">FAQ</a>
+      <a href="{{ '/about/' | relative_url }}">회사소개</a>
+      <a href="{{ '/contact/' | relative_url }}">문의</a>
     </nav>
   </div>
 </header>
@@ -52,6 +53,7 @@
   <div class="wrap">
     <p><strong>{{ site.company.name_ko }}</strong> ({{ site.company.name_en }}) · 설립 {{ site.company.founded }}년 · 대표 {{ site.company.ceo }}</p>
     <p>{{ site.company.address }} · Tel {{ site.company.tel }} · <a href="mailto:{{ site.company.email }}">{{ site.company.email }}</a></p>
+    <p><a href="{{ '/history/' | relative_url }}">걸어온 길</a> · <a href="{{ '/faq/' | relative_url }}">자주 묻는 질문</a> · <a href="{{ '/contact/' | relative_url }}">문의하기</a> · <a href="{{ '/en/' | relative_url }}">English</a></p>
     <p class="ai-notice">본 사이트의 인사이트·브리핑 콘텐츠는 AI가 공개 자료를 종합·분석하여 작성하며, 원 출처를 각 글에 표기합니다.</p>
   </div>
 </footer>
