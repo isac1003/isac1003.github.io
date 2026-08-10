@@ -1,0 +1,57 @@
+:root {
+  --text: #1a1a1a;
+  --muted: #666;
+  --accent: #0b5394;
+  --line: #e5e5e5;
+  --bg: #fff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.75;
+  font-size: 17px;
+  word-break: keep-all;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.site-header { border-bottom: 1px solid var(--line); padding: 18px 0; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; }
+.site-title { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 16px; margin-left: auto; }
+.site-header nav a { color: var(--muted); font-size: 0.95rem; }
+.site-header nav a:hover { color: var(--accent); }
+
+main { padding: 40px 20px 60px; min-height: 60vh; }
+h1 { font-size: 1.7rem; line-height: 1.35; margin: 0 0 16px; }
+h2 { font-size: 1.25rem; margin-top: 2em; }
+.post-meta, .item-meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 6px; }
+
+.post-list { list-style: none; padding: 0; margin: 0; }
+.post-list li { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.post-list h3 { margin: 0 0 4px; font-size: 1.1rem; }
+.post-list p { margin: 4px 0 0; color: var(--muted); font-size: 0.95rem; }
+
+.sources { margin-top: 2.5em; padding-top: 1em; border-top: 1px solid var(--line); }
+.sources h2 { font-size: 1rem; margin-top: 0; }
+.sources ul { padding-left: 1.2em; font-size: 0.92rem; }
+.ai-disclosure, .ai-notice { color: var(--muted); font-size: 0.85rem; }
+.ai-disclosure { margin-top: 2em; }
+
+.site-footer { border-top: 1px solid var(--line); padding: 24px 0 40px; font-size: 0.9rem; color: var(--muted); }
+.site-footer p { margin: 4px 0; }
+
+.section-desc { color: var(--muted); margin-bottom: 8px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+th { background: #f7f7f7; }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .site-header nav { margin-left: 0; }
+}

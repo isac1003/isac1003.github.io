@@ -1,0 +1,42 @@
+---
+layout: default
+---
+<section>
+  <h1>{{ site.company.name_ko }}</h1>
+  <p>{{ site.company.name_ko }}은 <strong>1993년 설립</strong>된 경영 컨설팅 전문기업입니다.
+  <strong>경영·전략 컨설팅</strong>, <strong>조사·연구용역</strong>, <strong>창업지원사업 운영</strong>의
+  세 분야에서 30년 이상 축적한 경험을 바탕으로 기업과 공공기관을 지원합니다.</p>
+  <p><a href="{{ '/about/' | relative_url }}">회사소개 자세히 보기 →</a></p>
+</section>
+
+<section>
+  <h2>최신 지원사업 브리핑</h2>
+  <p class="section-desc">창업·중소기업 지원사업 공고를 매일 정리합니다.</p>
+  <ul class="post-list">
+  {% assign briefs = site.categories.briefing | slice: 0, 5 %}
+  {% for post in briefs %}
+    <li>
+      <p class="item-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time></p>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p>{{ post.excerpt | strip_html | truncate: 110 }}</p>
+    </li>
+  {% endfor %}
+  </ul>
+  <p><a href="{{ '/briefing/' | relative_url }}">브리핑 전체 보기 →</a></p>
+</section>
+
+<section>
+  <h2>최신 인사이트</h2>
+  <p class="section-desc">경영·전략, 조사·연구 분야의 동향과 시사점을 해설합니다.</p>
+  <ul class="post-list">
+  {% assign ins = site.categories.insights | slice: 0, 5 %}
+  {% for post in ins %}
+    <li>
+      <p class="item-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time></p>
+      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p>{{ post.excerpt | strip_html | truncate: 110 }}</p>
+    </li>
+  {% endfor %}
+  </ul>
+  <p><a href="{{ '/insights/' | relative_url }}">인사이트 전체 보기 →</a></p>
+</section>

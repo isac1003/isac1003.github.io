@@ -1,0 +1,37 @@
+---
+layout: default
+---
+<article class="post">
+  <header>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %m월 %d일" }}</time>
+      {% if page.categories contains 'briefing' %} · 지원사업 브리핑{% elsif page.categories contains 'insights' %} · 인사이트{% endif %}
+    </p>
+    <h1>{{ page.title }}</h1>
+  </header>
+  {{ content }}
+  {% if page.sources %}
+  <section class="sources">
+    <h2>참고 자료</h2>
+    <ul>
+    {% for s in page.sources %}
+      <li><a href="{{ s.url }}" rel="nofollow noopener">{{ s.title }}</a></li>
+    {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <p class="ai-disclosure">이 글은 AI가 공개 자료를 종합·분석하여 작성했습니다. 작성일: {{ page.date | date: "%Y-%m-%d" }}</p>
+</article>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ page.title | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "author": { "@type": "Organization", "name": "{{ site.company.name_ko }}" },
+  "publisher": { "@type": "Organization", "name": "{{ site.company.name_ko }}", "url": "{{ site.url }}" },
+  "mainEntityOfPage": "{{ page.url | absolute_url }}",
+  "inLanguage": "ko"
+}
+</script>

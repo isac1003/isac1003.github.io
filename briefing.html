@@ -1,0 +1,17 @@
+---
+layout: default
+title: 지원사업 브리핑
+description: 창업·중소기업 정부지원사업 공고를 요건·대상·마감일 중심으로 매일 정리합니다.
+permalink: /briefing/
+---
+<h1>지원사업 브리핑</h1>
+<p class="section-desc">창업·중소기업 지원사업 공고를 요건·대상·마감일 중심으로 정리합니다. 매일 업데이트됩니다.</p>
+<ul class="post-list">
+{% for post in site.categories.briefing %}
+  <li>
+    <p class="item-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time></p>
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+  </li>
+{% endfor %}
+</ul>
