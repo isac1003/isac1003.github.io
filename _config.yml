@@ -1,9 +1,9 @@
 title: 맥스컨설팅(주)
 tagline: 경영·전략 컨설팅 | 조사·연구용역 | 창업지원사업 운영
 description: >-
-  맥스컨설팅(주)은 1993년 설립된 경영 컨설팅 전문기업으로, 경영·전략 컨설팅,
-  조사·연구용역, 창업지원사업 운영을 수행합니다. 중소기업 경영과 정부 지원사업에
-  대한 인사이트와 최신 지원사업 브리핑을 제공합니다.
+  맥스컨설팅(주)은 1982년 설립된 경영 컨설팅 전문기업으로, 전략마케팅 컨설팅,
+  R&D기획, 창업기업 성장지원, 공공사업 평가·조사연구를 수행합니다. 중소기업 경영과
+  정부 지원사업에 대한 인사이트와 최신 지원사업 브리핑을 제공합니다.
 url: "https://isac1003.github.io"
 lang: ko
 timezone: Asia/Seoul
@@ -12,10 +12,13 @@ timezone: Asia/Seoul
 company:
   name_ko: 맥스컨설팅(주)
   name_en: Max Consulting Co., Ltd.
-  founded: 1993
+  founded: 1982
+  founded_date: 1982-04-01
   ceo: 조윤재
   address: 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호
-  email: yj@maxconsulting.or.kr
+  tel: 02-3474-0906
+  fax: 02-3473-0109
+  email: helpme@maxconsulting.or.kr
 
 permalink: /:categories/:year/:month/:day/:title/
 
