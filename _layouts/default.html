@@ -33,6 +33,7 @@
 {% endif %}
 </head>
 <body class="{% if page.url == '/about/' or page.url == '/history/' or page.url contains '/projects' or page.url == '/contact/' or page.url == '/en/' %}theme-corp{% elsif page.url contains '/insights' or page.url contains '/briefing' %}theme-info{% endif %}">
+<a class="skip-link" href="#main">본문 바로가기</a>
 <header class="site-header">
   <div class="wrap">
     <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
@@ -40,16 +41,20 @@
       <a href="{{ '/services/' | relative_url }}">서비스</a>
       <a href="{{ '/startup/' | relative_url }}">스타트업</a>
       <a href="{{ '/projects/' | relative_url }}">수행실적</a>
-      <a href="{{ '/insights/' | relative_url }}">데이터로 보는 경영</a>
+      <a href="{{ '/insights/' | relative_url }}">데이터경영</a>
       <a href="{{ '/briefing/' | relative_url }}">지원사업 브리핑</a>
       <a href="{{ '/about/' | relative_url }}">회사소개</a>
-      <a href="{{ '/contact/' | relative_url }}">문의</a>
+      <a class="nav-cta" href="{{ '/contact/' | relative_url }}">문의하기</a>
     </nav>
   </div>
 </header>
-<main class="wrap">
+<main class="wrap" id="main">
 {{ content }}
 </main>
+{% unless page.url == '/contact/' %}<div class="cta-band"><div class="wrap">
+  <p class="cta-q">결정해야 하는 문제가 있는데, 답이 보이지 않으신가요?</p>
+  <p class="cta-a">첫 상담은 무료입니다 · <a href="{{ '/contact/' | relative_url }}">문의하기 →</a> · 02-3474-0906</p>
+</div></div>{% endunless %}
 <footer class="site-footer">
   <div class="wrap">
     <p><strong>{{ site.company.name_ko }}</strong> ({{ site.company.name_en }}) · 설립 {{ site.company.founded }}년 · 대표 {{ site.company.ceo }}</p>
@@ -59,6 +64,11 @@
   </div>
 </footer>
 <script>
+// 표를 가로 스크롤 가능한 래퍼로 감싸기 (모바일 깨짐 방지)
+document.querySelectorAll('main table').forEach(function(t){
+  var w = document.createElement('div'); w.className = 'table-wrap';
+  t.parentNode.insertBefore(w, t); w.appendChild(t);
+});
 // 외부 링크는 새 탭에서 열기 (사이트 이탈 방지)
 document.querySelectorAll('a[href^="http"]').forEach(function(a){
   if (a.hostname !== location.hostname) { a.target = "_blank"; a.rel = "noopener"; }

@@ -183,3 +183,29 @@ hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
 .theme-info .site-header { border-bottom-color: var(--green); }
 .theme-info h1 { color: #2e5c12; }
 .theme-info h2 { border-left-color: var(--green); }
+
+
+/* ── 접근성: skip link, 포커스 표시 ── */
+.skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 8px 16px; z-index: 100; }
+.skip-link:focus { left: 8px; top: 8px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; border-radius: 3px; }
+
+/* ── 표 가로 스크롤 (모바일) ── */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; }
+.table-wrap table { margin: 0; min-width: 480px; }
+
+/* ── 대상별 배너 (홈) ── */
+.audience { display: grid; gap: 10px; margin: 18px 0 10px; }
+.aud-banner { display: block; padding: 13px 18px; border-radius: 8px; background: var(--navy); color: #dbe4f2; font-size: 0.95rem; transition: background .15s; }
+.aud-banner strong { color: var(--green); margin-right: 6px; }
+.aud-banner:hover { background: #1d3a6b; text-decoration: none; color: #fff; }
+
+/* ── 헤더 문의 버튼 ── */
+.site-header nav a.nav-cta { background: var(--green); color: var(--navy); font-weight: 700; padding: 4px 14px; border-radius: 20px; border-bottom: none; }
+.site-header nav a.nav-cta:hover { background: #fff; color: var(--navy); }
+
+/* ── 하단 CTA 밴드 ── */
+.cta-band { background: linear-gradient(135deg, var(--navy) 0%, #1d3a6b 100%); padding: 30px 0; margin-top: 48px; text-align: center; }
+.cta-band .cta-q { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0 0 8px; }
+.cta-band .cta-a { color: #c9d4e5; margin: 0; }
+.cta-band a { color: var(--green); font-weight: 700; }
