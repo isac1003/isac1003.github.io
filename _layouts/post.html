@@ -40,8 +40,8 @@ layout: default
   {% if cat == 'briefing' %}{% assign listurl = '/briefing/' %}{% assign listname = '지원사업 브리핑' %}{% else %}{% assign listurl = '/insights/' %}{% assign listname = '데이터로 보는 경영' %}{% endif %}
   <nav class="post-nav">
     <div class="post-nav-row">
-      {% if newer_i >= 0 %}{% assign newer = catposts[newer_i] %}<a class="nav-prev" href="{{ newer.url | relative_url }}">← 다음 글: {{ newer.title | truncate: 28 }}</a>{% else %}<span></span>{% endif %}
-      {% if older_i < catposts.size %}{% assign older = catposts[older_i] %}<a class="nav-next" href="{{ older.url | relative_url }}">이전 글: {{ older.title | truncate: 28 }} →</a>{% else %}<span></span>{% endif %}
+      {% if newer_i >= 0 %}{% assign newer = catposts[newer_i] %}<a class="nav-prev" href="{{ newer.url | relative_url }}">← 다음 글</a>{% else %}<span></span>{% endif %}
+      {% if older_i < catposts.size %}{% assign older = catposts[older_i] %}<a class="nav-next" href="{{ older.url | relative_url }}">이전 글 →</a>{% else %}<span></span>{% endif %}
     </div>
     <p class="nav-list"><a href="{{ listurl | relative_url }}">☰ {{ listname }} 목록 보기</a> · <a href="{{ '/' | relative_url }}">홈으로</a> · <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ 맨 위로</a></p>
   </nav>
