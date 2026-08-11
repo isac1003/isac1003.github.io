@@ -17,7 +17,7 @@ body {
   color: var(--text);
   background: var(--bg);
   line-height: 1.75;
-  font-size: 17px;
+  font-size: clamp(15px, 1vw + 11.5px, 17.5px);
   word-break: keep-all;
 }
 .wrap { max-width: 820px; margin: 0 auto; padding: 0 20px; }
@@ -45,7 +45,7 @@ a:hover { text-decoration: underline; }
   margin: -40px -20px 36px;
 }
 .hero .wrap { max-width: 820px; }
-.hero h1 { color: #fff; font-size: 1.9rem; margin: 0 0 10px; }
+.hero h1 { color: #fff; font-size: clamp(1.4rem, 3.5vw, 1.9rem); margin: 0 0 10px; }
 .hero .motto { color: var(--green); font-weight: 700; font-size: 1.05rem; margin: 0 0 14px; font-style: italic; }
 .hero p { color: #dbe4f2; max-width: 640px; }
 .hero a { color: var(--green); font-weight: 600; }
@@ -65,9 +65,9 @@ a:hover { text-decoration: underline; }
 
 /* ── 본문 ── */
 main { padding: 40px 20px 60px; min-height: 60vh; }
-h1 { font-size: 1.7rem; line-height: 1.35; margin: 0 0 16px; color: var(--navy); }
+h1 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); line-height: 1.35; margin: 0 0 16px; color: var(--navy); }
 h2 {
-  font-size: 1.3rem;
+  font-size: clamp(1.12rem, 2vw, 1.3rem);
   color: var(--navy);
   margin-top: 2.2em;
   padding-left: 12px;
@@ -138,10 +138,8 @@ hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
 .site-footer .ai-notice { color: #6d7f9c; }
 
 @media (max-width: 600px) {
-  body { font-size: 16px; }
   .site-header nav { margin-left: 0; }
   .hero { padding: 36px 0 30px; }
-  .hero h1 { font-size: 1.5rem; }
 }
 
 /* ── 누적형 목록 (날짜+제목) ── */
@@ -175,3 +173,13 @@ hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
 .badge-guide { background: var(--navy); color: #fff; }
 .badge-target { background: var(--bg-soft); color: var(--muted); font-weight: 500; }
 .brief-meta { margin: -6px 0 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+
+/* ── 섹션 색상 구분: 회사 정보(네이비 계열) vs 정보 제공(그린 계열) ── */
+.theme-corp .site-header { border-bottom-color: #4a76c4; }
+.theme-corp h2 { border-left-color: #4a76c4; }
+.theme-corp .more-link, .theme-corp .archive-list a:hover { color: #2f56a0; }
+.theme-corp .post-list li, .theme-corp .brief-list li { border-left-color: #4a76c4; }
+.theme-info .site-header { border-bottom-color: var(--green); }
+.theme-info h1 { color: #2e5c12; }
+.theme-info h2 { border-left-color: var(--green); }

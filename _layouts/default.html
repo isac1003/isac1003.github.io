@@ -32,7 +32,7 @@
 </script>
 {% endif %}
 </head>
-<body>
+<body class="{% if page.url == '/about/' or page.url == '/history/' or page.url contains '/projects' or page.url == '/contact/' or page.url == '/en/' %}theme-corp{% elsif page.url contains '/insights' or page.url contains '/briefing' %}theme-info{% endif %}">
 <header class="site-header">
   <div class="wrap">
     <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
