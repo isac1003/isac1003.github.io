@@ -23,6 +23,7 @@ layout: default
     <a class="service" href="{{ '/services/sales/' | relative_url }}"><h3>"매출이 안 오른다"</h3><p>POS·영업 데이터 진단으로 매출 처방</p></a>
     <a class="service" href="{{ '/services/production/' | relative_url }}"><h3>"불량·원가를 못 잡겠다"</h3><p>생산 데이터에서 원인과 우선순위 도출</p></a>
     <a class="service" href="{{ '/services/evaluation/' | relative_url }}"><h3>"잘 하고 있는 걸까?"</h3><p>실태조사·성과분석·경영평가</p></a>
+    <a class="service" href="{{ '/services/bm/' | relative_url }}"><h3>"내 사업모델 괜찮을까?"</h3><p>IR 보내면 AI+전문가 진단 리포트</p></a>
     <a class="service" href="{{ '/services/startup/' | relative_url }}"><h3>"어떻게 성장하지?"</h3><p>창업기업 BM 고도화·투자유치</p></a>
     <a class="service" href="{{ '/services/export/' | relative_url }}"><h3>"어느 시장으로 수출하지?"</h3><p>데이터 기반 목표시장·바이어 발굴</p></a>
     <a class="service" href="{{ '/services/rnd/' | relative_url }}"><h3>"뭘 개발해야 하지?"</h3><p>시장 근거 있는 R&amp;D과제 기획</p></a>
@@ -45,13 +46,13 @@ layout: default
 </section>
 
 <section>
-  <h2>최신 인사이트</h2>
-  <p class="section-desc">경영·전략, 조사·연구 분야의 동향과 시사점을 해설합니다.</p>
+  <h2>데이터로 보는 경영</h2>
+  <p class="section-desc">데이터와 해석으로 경영의 답을 찾습니다. 시장·정책 동향을 컨설팅 관점에서 풀어드립니다.</p>
   <ul class="archive-list">
   {% assign ins = site.categories.insights | slice: 0, 5 %}
   {% for post in ins %}
     <li><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
   {% endfor %}
   </ul>
-  <p><a class="more-link" href="{{ '/insights/' | relative_url }}">인사이트 전체 보기 →</a></p>
+  <p><a class="more-link" href="{{ '/insights/' | relative_url }}">데이터로 보는 경영 전체 보기 →</a></p>
 </section>

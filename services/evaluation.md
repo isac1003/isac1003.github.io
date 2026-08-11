@@ -71,6 +71,6 @@ permalink: /services/evaluation/
 조직진단에 AI 활용 수준 진단과 도입 로드맵을 결합해 수행합니다. 상부 기관의
 디지털 전환 요구에 대응해야 하는 산하기관에 특히 유용합니다.
 
-관련 실적: [연도별 수행실적](/projects/) · 관련 글: [인사이트](/insights/)
+관련 실적: [평가·실태조사·정책연구 실적 150건](/projects/evaluation/) · 관련 글: [인사이트](/insights/)
 
 **[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr

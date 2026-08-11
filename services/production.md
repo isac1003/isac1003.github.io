@@ -73,6 +73,6 @@ permalink: /services/production/
 입니다. 절감 예상액이 진단 비용에 못 미치면 그렇게 말씀드립니다. 스마트공장·
 데이터바우처 등 정부 지원 연계로 비용 자체를 낮추는 방법도 함께 설계합니다.
 
-관련 실적: [수행실적 전체 보기](/projects/) · 관련 글: [인사이트](/insights/)
+관련 실적: [성장전략·경영컨설팅 실적](/projects/consulting/) · 관련 글: [인사이트](/insights/)
 
 **[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr

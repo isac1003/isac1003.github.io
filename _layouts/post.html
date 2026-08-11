@@ -5,7 +5,7 @@ layout: default
   <header>
     <p class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %m월 %d일" }}</time>
-      {% if page.categories contains 'briefing' %} · 지원사업 브리핑{% elsif page.categories contains 'insights' %} · 인사이트{% endif %}
+      {% if page.categories contains 'briefing' %} · 지원사업 브리핑{% elsif page.categories contains 'insights' %} · 데이터로 보는 경영{% endif %}
     </p>
     <h1>{{ page.title }}</h1>
     {% if page.categories contains 'briefing' %}
@@ -37,7 +37,7 @@ layout: default
   {% for p in catposts %}{% if p.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
   {% assign newer_i = idx | minus: 1 %}
   {% assign older_i = idx | plus: 1 %}
-  {% if cat == 'briefing' %}{% assign listurl = '/briefing/' %}{% assign listname = '지원사업 브리핑' %}{% else %}{% assign listurl = '/insights/' %}{% assign listname = '인사이트' %}{% endif %}
+  {% if cat == 'briefing' %}{% assign listurl = '/briefing/' %}{% assign listname = '지원사업 브리핑' %}{% else %}{% assign listurl = '/insights/' %}{% assign listname = '데이터로 보는 경영' %}{% endif %}
   <nav class="post-nav">
     <div class="post-nav-row">
       {% if newer_i >= 0 %}{% assign newer = catposts[newer_i] %}<a class="nav-prev" href="{{ newer.url | relative_url }}">← 다음 글: {{ newer.title | truncate: 28 }}</a>{% else %}<span></span>{% endif %}

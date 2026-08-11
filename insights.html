@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 인사이트
-description: 경영·전략, 조사·연구 분야의 뉴스와 동향을 컨설팅 관점에서 해설합니다.
+title: 데이터로 보는 경영
+description: 데이터와 해석으로 경영의 답을 찾습니다. 경영·전략, 시장·정책 동향을 컨설팅 관점에서 해설합니다.
 permalink: /insights/
 ---
-<h1>인사이트</h1>
-<p class="section-desc">경영·전략, 조사·연구 분야의 동향을 컨설팅 관점에서 해설합니다. 매일 업데이트되며, 전체 {{ site.categories.insights | size }}편이 월별로 정리되어 있습니다.</p>
+<h1>데이터로 보는 경영</h1>
+<p class="section-desc">데이터와 해석으로 경영의 답을 찾는 코너입니다. 전체 {{ site.categories.insights | size }}편이 월별로 정리되어 있습니다.</p>
 {% assign prev_month = "" %}
 {% for post in site.categories.insights %}
   {% assign this_month = post.date | date: "%Y년 %m월" %}

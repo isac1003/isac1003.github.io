@@ -69,6 +69,6 @@ permalink: /services/export/
 자격 확인부터 신청 전략, 바우처로 저희 서비스를 이용하는 것까지 한 번에 안내해
 드립니다. 코트라 수출바우처 컨설팅기관 5년 연속 선정사입니다.
 
-관련 실적: [수행실적](/projects/) · 관련 글: [인사이트](/insights/)
+관련 실적: [수출지원·바이어 발굴 실적](/projects/export/) · [시장조사 실적](/projects/market/) · 관련 글: [인사이트](/insights/)
 
 **[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
