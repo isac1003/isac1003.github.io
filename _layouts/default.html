@@ -6,7 +6,8 @@
 <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }} — {{ site.tagline }}{% endif %}</title>
 <meta name="description" content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 155 }}{% else %}{{ site.description | strip_newlines | truncate: 155 }}{% endif %}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
-<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS" href="{{ '/rss.xml' | absolute_url }}">
 <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
 <meta name="naver-site-verification" content="07b7be2d7e66f87ec7ba78c210324b93b1264b7e" />
 <meta name="google-site-verification" content="KtAizlzhIj5BejR3n0fSTif34URfTQr7iZpmPh526Cg" />
