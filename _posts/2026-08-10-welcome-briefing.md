@@ -1,6 +1,8 @@
 ---
 title: "지원사업 브리핑을 시작합니다 — 공고문 읽는 법"
 categories: briefing
+target: 전체
+status: guide
 description: 맥스컨설팅 지원사업 브리핑 코너를 시작하며, 정부 지원사업 공고문을 읽을 때 확인해야 할 핵심 항목을 정리했습니다.
 ---
 

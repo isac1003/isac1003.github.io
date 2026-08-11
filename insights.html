@@ -5,13 +5,16 @@ description: 경영·전략, 조사·연구 분야의 뉴스와 동향을 컨설
 permalink: /insights/
 ---
 <h1>인사이트</h1>
-<p class="section-desc">경영·전략, 조사·연구 분야의 동향을 컨설팅 관점에서 해설합니다. 매일 업데이트됩니다.</p>
-<ul class="post-list">
+<p class="section-desc">경영·전략, 조사·연구 분야의 동향을 컨설팅 관점에서 해설합니다. 매일 업데이트되며, 전체 {{ site.categories.insights | size }}편이 월별로 정리되어 있습니다.</p>
+{% assign prev_month = "" %}
 {% for post in site.categories.insights %}
-  <li>
-    <p class="item-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time></p>
-    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-    <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
-  </li>
+  {% assign this_month = post.date | date: "%Y년 %m월" %}
+  {% if this_month != prev_month %}
+    {% unless forloop.first %}</ul>{% endunless %}
+    <h2 class="archive-month">{{ this_month }}</h2>
+    <ul class="archive-list">
+    {% assign prev_month = this_month %}
+  {% endif %}
+  <li><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m.%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+  {% if forloop.last %}</ul>{% endif %}
 {% endfor %}
-</ul>

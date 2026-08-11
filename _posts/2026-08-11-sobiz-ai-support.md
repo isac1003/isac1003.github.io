@@ -1,6 +1,9 @@
 ---
 title: "소상공인도 AI 지원받는 시대 — '혁신 소상공인 AI 활용지원 사업' 공고 읽기"
 categories: briefing
+target: 소상공인
+status: closed
+deadline: 2026-07-03
 description: 중소벤처기업부가 2026년 신설한 혁신 소상공인 AI 활용지원 사업의 지원 대상, 내용, 신청 방법을 정리했습니다. 차기 공고 대비 체크포인트 포함.
 sources:
   - title: "혁신 소상공인 AI 활용지원 사업 공고 (소상공인시장진흥공단)"

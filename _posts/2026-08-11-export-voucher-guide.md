@@ -1,6 +1,8 @@
 ---
 title: "수출바우처, 무엇까지 지원되나 — 14개 서비스 한눈에 보기"
 categories: briefing
+target: 중소기업·수출
+status: ongoing
 description: 수출지원기반활용사업(수출바우처)으로 이용할 수 있는 14개 서비스 카테고리와 신청 방법을 정리했습니다. 2026년 모집이 진행 중입니다.
 sources:
   - title: "수출지원기반활용사업 포털"

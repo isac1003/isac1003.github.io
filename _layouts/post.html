@@ -8,6 +8,15 @@ layout: default
       {% if page.categories contains 'briefing' %} · 지원사업 브리핑{% elsif page.categories contains 'insights' %} · 인사이트{% endif %}
     </p>
     <h1>{{ page.title }}</h1>
+    {% if page.categories contains 'briefing' %}
+    <p class="brief-meta">
+      {% if page.status == 'guide' %}<span class="badge badge-guide">가이드</span>
+      {% elsif page.status == 'ongoing' %}<span class="badge badge-ongoing">진행 중</span>
+      {% elsif page.status == 'closed' %}<span class="badge badge-closed">접수 마감{% if page.deadline %} ({{ page.deadline | date: "%Y.%m.%d" }}){% endif %}</span>
+      {% elsif page.deadline %}<span class="badge badge-dday" data-deadline="{{ page.deadline }}">마감 {{ page.deadline | date: "%Y.%m.%d" }}</span>{% endif %}
+      {% if page.target %}<span class="badge badge-target">대상: {{ page.target }}</span>{% endif %}
+    </p>
+    {% endif %}
   </header>
   {{ content }}
   {% if page.sources %}
@@ -15,12 +24,27 @@ layout: default
     <h2>참고 자료</h2>
     <ul>
     {% for s in page.sources %}
-      <li><a href="{{ s.url }}" rel="nofollow noopener">{{ s.title }}</a></li>
+      <li><a href="{{ s.url }}" target="_blank" rel="nofollow noopener">{{ s.title }}</a></li>
     {% endfor %}
     </ul>
   </section>
   {% endif %}
   <p class="ai-disclosure">이 글은 AI가 공개 자료를 종합·분석하여 작성했습니다. 작성일: {{ page.date | date: "%Y-%m-%d" }}</p>
+
+  {% assign cat = page.categories.first %}
+  {% assign catposts = site.categories[cat] %}
+  {% assign idx = -1 %}
+  {% for p in catposts %}{% if p.url == page.url %}{% assign idx = forloop.index0 %}{% endif %}{% endfor %}
+  {% assign newer_i = idx | minus: 1 %}
+  {% assign older_i = idx | plus: 1 %}
+  {% if cat == 'briefing' %}{% assign listurl = '/briefing/' %}{% assign listname = '지원사업 브리핑' %}{% else %}{% assign listurl = '/insights/' %}{% assign listname = '인사이트' %}{% endif %}
+  <nav class="post-nav">
+    <div class="post-nav-row">
+      {% if newer_i >= 0 %}{% assign newer = catposts[newer_i] %}<a class="nav-prev" href="{{ newer.url | relative_url }}">← 다음 글: {{ newer.title | truncate: 28 }}</a>{% else %}<span></span>{% endif %}
+      {% if older_i < catposts.size %}{% assign older = catposts[older_i] %}<a class="nav-next" href="{{ older.url | relative_url }}">이전 글: {{ older.title | truncate: 28 }} →</a>{% else %}<span></span>{% endif %}
+    </div>
+    <p class="nav-list"><a href="{{ listurl | relative_url }}">☰ {{ listname }} 목록 보기</a> · <a href="{{ '/' | relative_url }}">홈으로</a> · <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ 맨 위로</a></p>
+  </nav>
 </article>
 <script type="application/ld+json">
 {

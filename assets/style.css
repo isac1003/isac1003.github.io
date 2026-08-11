@@ -143,3 +143,35 @@ hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
   .hero { padding: 36px 0 30px; }
   .hero h1 { font-size: 1.5rem; }
 }
+
+/* ── 누적형 목록 (날짜+제목) ── */
+.archive-month { font-size: 1.05rem; margin-top: 1.8em; }
+.archive-list { list-style: none; padding: 0; margin: 8px 0 0; }
+.archive-list li {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 9px 4px; border-bottom: 1px solid var(--line);
+}
+.archive-list time { color: var(--muted); font-size: 0.85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.archive-list a { color: var(--text); flex: 1; }
+.archive-list a:hover { color: var(--green-dark); text-decoration: none; }
+
+/* ── 글 하단 내비게이션 ── */
+.post-nav { margin-top: 2.2em; padding-top: 14px; border-top: 2px solid var(--navy); }
+.post-nav-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 0.92rem; }
+.post-nav-row a { color: var(--navy); }
+.post-nav-row a:hover { color: var(--green-dark); text-decoration: none; }
+.nav-list { margin-top: 10px; font-size: 0.95rem; }
+.nav-list a { font-weight: 600; }
+
+/* ── 브리핑 뱃지·목록 ── */
+.brief-list { list-style: none; padding: 0; margin: 8px 0 0; }
+.brief-list li { display: flex; align-items: baseline; gap: 8px; padding: 9px 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.brief-list a { color: var(--text); flex: 1; min-width: 200px; }
+.brief-list a:hover { color: var(--green-dark); text-decoration: none; }
+.badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; line-height: 1.6; }
+.badge-dday { background: #e8f5d9; color: var(--green-dark); }
+.badge-ongoing { background: #e3edfa; color: var(--accent); }
+.badge-closed { background: #eee; color: #888; }
+.badge-guide { background: var(--navy); color: #fff; }
+.badge-target { background: var(--bg-soft); color: var(--muted); font-weight: 500; }
+.brief-meta { margin: -6px 0 14px; display: flex; gap: 6px; flex-wrap: wrap; }

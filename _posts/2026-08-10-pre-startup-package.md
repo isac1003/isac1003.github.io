@@ -1,6 +1,9 @@
 ---
 title: "예비창업패키지, 평균 4천만 원 — 내년 공고 전에 준비할 것"
 categories: briefing
+target: 예비창업자
+status: closed
+deadline: 2026-03-24
 description: 예비창업패키지의 지원 내용(평균 약 4천만 원, 최대 1억 원)과 자격 요건, 그리고 내년 공고 전에 준비해야 할 것을 정리했습니다.
 sources:
   - title: "2026년 예비창업패키지 예비창업자 모집 공고 (기업마당)"

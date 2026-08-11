@@ -1,17 +1,71 @@
 ---
 layout: default
 title: 지원사업 브리핑
-description: 창업·중소기업 정부지원사업 공고를 요건·대상·마감일 중심으로 매일 정리합니다.
+description: 창업·중소기업 정부지원사업 공고를 대상·마감일 중심으로 매일 정리합니다. 접수 중인 사업과 마감된 사업을 구분해 제공합니다.
 permalink: /briefing/
 ---
 <h1>지원사업 브리핑</h1>
-<p class="section-desc">창업·중소기업 지원사업 공고를 요건·대상·마감일 중심으로 정리합니다. 매일 업데이트됩니다.</p>
-<ul class="post-list">
-{% for post in site.categories.briefing %}
+<p class="section-desc">창업·중소기업 지원사업 공고를 대상·마감일 중심으로 매일 정리합니다. 전체 {{ site.categories.briefing | size }}편.</p>
+
+{% assign briefs = site.categories.briefing %}
+
+<h2>지금 접수·진행 중</h2>
+<ul class="brief-list">
+{% assign has_open = false %}
+{% for post in briefs %}
+  {% if post.status == 'open' or post.status == 'ongoing' %}
+  {% assign has_open = true %}
   <li>
-    <p class="item-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y.%m.%d" }}</time></p>
-    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-    <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+    {% if post.deadline %}<span class="badge badge-dday" data-deadline="{{ post.deadline }}">~{{ post.deadline | date: "%m.%d" }}</span>{% else %}<span class="badge badge-ongoing">진행 중</span>{% endif %}
+    <span class="badge badge-target">{{ post.target | default: "전체" }}</span>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
   </li>
+  {% endif %}
 {% endfor %}
 </ul>
+{% unless has_open %}<p class="section-desc">현재 접수 중으로 확인된 공고가 없습니다. 새 공고가 나오면 이곳에 먼저 올라옵니다.</p>{% endunless %}
+
+<h2>신청 준비 가이드</h2>
+<ul class="brief-list">
+{% for post in briefs %}
+  {% if post.status == 'guide' %}
+  <li>
+    <span class="badge badge-guide">가이드</span>
+    <span class="badge badge-target">{{ post.target | default: "전체" }}</span>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </li>
+  {% endif %}
+{% endfor %}
+</ul>
+
+<h2>마감된 공고 (차기 공고 대비 참고)</h2>
+<p class="section-desc">접수는 끝났지만 대부분 매년 반복되는 사업입니다. 다음 공고를 준비하는 데 활용하세요.</p>
+{% assign prev_month = "" %}
+{% for post in briefs %}
+  {% if post.status == 'closed' %}
+    {% assign this_month = post.date | date: "%Y년 %m월" %}
+    {% if this_month != prev_month %}
+      {% if prev_month != "" %}</ul>{% endif %}
+      <h3 class="archive-month">{{ this_month }} 정리</h3>
+      <ul class="brief-list">
+      {% assign prev_month = this_month %}
+    {% endif %}
+    <li>
+      <span class="badge badge-closed">마감</span>
+      <span class="badge badge-target">{{ post.target | default: "전체" }}</span>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+{% if prev_month != "" %}</ul>{% endif %}
+
+<script>
+// D-day 자동 계산: 방문 시점 기준으로 뱃지를 갱신하고, 마감 지난 항목은 '마감'으로 표시
+document.querySelectorAll('.badge-dday').forEach(function(b){
+  var d = new Date(b.dataset.deadline + "T23:59:59+09:00");
+  var days = Math.ceil((d - new Date()) / 86400000);
+  if (days < 0) { b.textContent = "마감"; b.classList.add("badge-closed"); b.classList.remove("badge-dday"); }
+  else if (days === 0) { b.textContent = "오늘 마감"; }
+  else { b.textContent = "D-" + days; }
+});
+</script>

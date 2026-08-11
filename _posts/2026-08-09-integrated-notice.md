@@ -1,6 +1,8 @@
 ---
 title: "올해 정부 창업지원사업, 어디서 한눈에 보나 — 통합공고 활용법"
 categories: briefing
+target: 창업자 전체
+status: guide
 description: 중앙부처와 지자체의 창업지원사업을 한 번에 확인하는 통합공고 활용법과, 나에게 맞는 사업을 고르는 기준을 정리했습니다.
 sources:
   - title: "2026년 중앙부처 및 지자체 창업지원사업 통합 공고 (기업마당)"
