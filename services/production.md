@@ -75,4 +75,4 @@ permalink: /services/production/
 
 관련 실적: [성장전략·경영컨설팅 실적](/projects/consulting/) · 관련 글: [인사이트](/insights/)
 
-**[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
+**[문의하기 →](/contact/)** 전화 02-3474-0906 · consult@maxconsulting.or.kr

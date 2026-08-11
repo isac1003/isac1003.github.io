@@ -30,11 +30,11 @@
 - [데이터로 보는 경영](/insights/): 데이터와 해석으로 경영의 답을 찾는 코너 — 시장·정책 동향 해설 (매일 갱신)
 - [지원사업 브리핑](/briefing/): 정부 창업·중소기업 지원사업 공고 정리 — 요건, 대상, 마감일 (매일 갱신)
 - [FAQ](/faq/): 경영컨설팅, 연구용역, 창업지원사업 관련 질문과 답변
-- [문의](/contact/): 전화 02-3474-0906, helpme@maxconsulting.or.kr
+- [문의](/contact/): 전화 02-3474-0906, consult@maxconsulting.or.kr
 
 ## 참고
 
 - 인사이트·브리핑 글은 AI가 공개 자료(정부 보도자료, 공공 공고 등)를 종합·분석하여
   작성하며, 각 글에 원 출처 링크를 표기한다.
 - 전체 글 목록: /sitemap.xml, 최신 글 피드: /feed.xml
-- 문의: helpme@maxconsulting.or.kr, Tel 02-3474-0906
+- 문의: consult@maxconsulting.or.kr, Tel 02-3474-0906

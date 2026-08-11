@@ -14,7 +14,7 @@ permalink: /services/bm/
 
 ## 어떻게 진행되나
 
-**① 접수** — IR 자료(PDF·PPT)나 사업계획서를 helpme@maxconsulting.or.kr 로
+**① 접수** — IR 자료(PDF·PPT)나 사업계획서를 consult@maxconsulting.or.kr 로
 보내주십시오. 자료가 정리되어 있지 않아도 됩니다 — 있는 그대로 보내주시면 됩니다.
 
 **② 분석** — AI가 자료를 구조 분석하고, 여기에 **1,600개사의 IR을 봐온
@@ -74,4 +74,4 @@ permalink: /services/bm/
 
 관련 실적: [창업지원·투자유치 실적 48건](/projects/startup/) · 관련 글: [데이터로 보는 경영](/insights/)
 
-**[문의하기 →](/contact/)** IR 자료 접수: helpme@maxconsulting.or.kr · 전화 02-3474-0906
+**[문의하기 →](/contact/)** IR 자료 접수: consult@maxconsulting.or.kr · 전화 02-3474-0906

@@ -73,4 +73,4 @@ permalink: /services/evaluation/
 
 관련 실적: [평가·실태조사·정책연구 실적 150건](/projects/evaluation/) · 관련 글: [인사이트](/insights/)
 
-**[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
+**[문의하기 →](/contact/)** 전화 02-3474-0906 · consult@maxconsulting.or.kr

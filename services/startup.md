@@ -75,4 +75,4 @@ IR 자료를 다시 만들고 피칭을 코칭했습니다. 이후 투자상담�
 
 관련 실적: [창업지원·투자유치 실적 48건](/projects/startup/) · 관련 글: [지원사업 브리핑](/briefing/)
 
-**[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
+**[문의하기 →](/contact/)** 전화 02-3474-0906 · consult@maxconsulting.or.kr

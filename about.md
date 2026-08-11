@@ -44,7 +44,7 @@ permalink: /about/
 | 소재지 | 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호 |
 | 전화 | 02-3474-0906 |
 | 팩스 | 02-3473-0109 |
-| 이메일 | helpme@maxconsulting.or.kr |
+| 이메일 | consult@maxconsulting.or.kr |
 
 ## 주요 인증·등록
 

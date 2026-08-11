@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 문의하기
-description: 맥스컨설팅(주) 문의 — 전화 02-3474-0906, 이메일 helpme@maxconsulting.or.kr. 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호.
+description: 맥스컨설팅(주) 문의 — 전화 02-3474-0906, 이메일 consult@maxconsulting.or.kr. 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호.
 permalink: /contact/
 ---
 
@@ -17,7 +17,7 @@ permalink: /contact/
 |------|------|
 | 전화 | 02-3474-0906 |
 | 팩스 | 02-3473-0109 |
-| 이메일 | [helpme@maxconsulting.or.kr](mailto:helpme@maxconsulting.or.kr) |
+| 이메일 | [consult@maxconsulting.or.kr](mailto:consult@maxconsulting.or.kr) |
 | 주소 | 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호 |
 
 이메일로 문의하실 때 다음 세 가지를 적어주시면 첫 답변이 훨씬 구체적이 됩니다.

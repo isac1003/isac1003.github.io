@@ -71,4 +71,4 @@ permalink: /services/export/
 
 관련 실적: [수출지원·바이어 발굴 실적](/projects/export/) · [시장조사 실적](/projects/market/) · 관련 글: [인사이트](/insights/)
 
-**[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
+**[문의하기 →](/contact/)** 전화 02-3474-0906 · consult@maxconsulting.or.kr

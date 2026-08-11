@@ -18,7 +18,7 @@ company:
   address: 경기도 안양시 동안구 시민대로 361, 에이스평촌타워 506호
   tel: 02-3474-0906
   fax: 02-3473-0109
-  email: helpme@maxconsulting.or.kr
+  email: consult@maxconsulting.or.kr
 
 permalink: /:categories/:year/:month/:day/:title/
 

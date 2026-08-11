@@ -36,7 +36,7 @@ IR 자료나 사업계획서를 보내주시면, AI 분석과 액셀러레이터
 전부이자 가장 큰 가치입니다.
 
 [서비스 안내](/services/bm/) · **[실제 진단 리포트 샘플 보기](/services/bm/sample/)**
-· 자료 접수: helpme@maxconsulting.or.kr
+· 자료 접수: consult@maxconsulting.or.kr
 
 ## ② 창업기업 모집 — 투자유치 지원 프로그램 (수시)
 
@@ -46,7 +46,7 @@ IR 자료나 사업계획서를 보내주시면, AI 분석과 액셀러레이터
 지원받습니다.
 
 농식품(생산·가공·유통·푸드테크·애그테크) 분야 창업기업과 예비창업자라면 특히
-기회가 많습니다. 회사 소개와 연락처를 helpme@maxconsulting.or.kr 로 보내주시면,
+기회가 많습니다. 회사 소개와 연락처를 consult@maxconsulting.or.kr 로 보내주시면,
 지금 참여 가능한 프로그램과 다음 모집 일정을 안내해 드립니다. 프로그램 공고는
 [지원사업 브리핑](/briefing/)에도 올라옵니다.
 
@@ -70,4 +70,4 @@ IR 자료나 사업계획서를 보내주시면, AI 분석과 액셀러레이터
 ---
 
 어느 단계든, 어떤 고민이든 — 첫 상담은 무료입니다. **[문의하기](/contact/)** ·
-전화 02-3474-0906 · helpme@maxconsulting.or.kr
+전화 02-3474-0906 · consult@maxconsulting.or.kr

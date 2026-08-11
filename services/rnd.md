@@ -70,4 +70,4 @@ R&D는 오히려 중소기업이 연구인력과 개발비를 확보하는 통�
 
 관련 실적: [R&D기획·기술사업화 실적 36건](/projects/rnd/) · 관련 글: [인사이트](/insights/)
 
-**[문의하기 →](/contact/)** 전화 02-3474-0906 · helpme@maxconsulting.or.kr
+**[문의하기 →](/contact/)** 전화 02-3474-0906 · consult@maxconsulting.or.kr

@@ -91,4 +91,4 @@ Why Now를 못 보면 투자자는 뒷장을 대충 넘깁니다.
 ---
 
 *내 IR도 투자자의 눈으로 진단받으려면 — [IR·비즈니스모델 진단](/services/bm/) ·
-자료 접수: helpme@maxconsulting.or.kr · [문의하기](/contact/)*
+자료 접수: consult@maxconsulting.or.kr · [문의하기](/contact/)*
