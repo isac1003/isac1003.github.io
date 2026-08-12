@@ -30,8 +30,9 @@ a:hover { text-decoration: underline; }
   padding: 16px 0;
   border-bottom: 4px solid var(--green);
 }
-.site-header .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; }
-.site-title { font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.site-title { font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 10px; }
+.site-logo { height: 36px; width: auto; display: block; }
 .site-title:hover { text-decoration: none; color: var(--green); }
 .site-header nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-left: auto; }
 .site-header nav a { color: #c9d4e5; font-size: 0.95rem; padding: 2px 0; border-bottom: 2px solid transparent; }

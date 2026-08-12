@@ -9,6 +9,9 @@
 <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS" href="{{ '/rss.xml' | absolute_url }}">
 <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon-32.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="512x512" href="{{ '/assets/favicon-512.png' | relative_url }}">
+<link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}">
 <meta name="naver-site-verification" content="07b7be2d7e66f87ec7ba78c210324b93b1264b7e" />
 <meta name="google-site-verification" content="KtAizlzhIj5BejR3n0fSTif34URfTQr7iZpmPh526Cg" />
 {% if page.url == "/" or page.url == "/about/" or page.url == "/history/" %}
@@ -19,6 +22,7 @@
   "name": "{{ site.company.name_ko }}",
   "alternateName": "{{ site.company.name_en }}",
   "url": "{{ site.url }}",
+  "logo": "{{ '/assets/logo.png' | absolute_url }}",
   "email": "{{ site.company.email }}",
   "foundingDate": "{{ site.company.founded_date }}",
   "telephone": "+82-2-3474-0906",
@@ -39,7 +43,7 @@
 <a class="skip-link" href="#main">본문 바로가기</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <a class="site-title" href="{{ '/' | relative_url }}"><img class="site-logo" src="{{ '/assets/logo-mark-white.png' | relative_url }}" alt="" width="32" height="36">{{ site.title }}</a>
     <nav aria-label="주 메뉴">
       <a href="{{ '/services/' | relative_url }}">서비스</a>
       <a href="{{ '/startup/' | relative_url }}">스타트업</a>
