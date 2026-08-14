@@ -210,3 +210,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--green); outline
 .cta-band .cta-q { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0 0 8px; }
 .cta-band .cta-a { color: #c9d4e5; margin: 0; }
 .cta-band a { color: var(--green); font-weight: 700; }
+
+/* ── 계층형 메뉴 ── */
+.site-header nav { align-items: center; }
+.nav-item { position: relative; display: inline-block; }
+.nav-item > a .caret { font-size: 0.7em; opacity: .7; margin-left: 2px; }
+.dropdown { display: none; position: absolute; top: 100%; left: -12px; background: #fff; min-width: 230px; border-radius: 10px; box-shadow: 0 10px 28px rgba(15,29,54,.18); padding: 8px 0; margin-top: 10px; z-index: 60; }
+.dropdown::before { content: ''; position: absolute; top: -12px; left: 0; right: 0; height: 12px; }
+.nav-item:hover > .dropdown, .nav-item.open > .dropdown { display: block; }
+.site-header nav .dropdown a { display: block; padding: 9px 18px; color: var(--text); font-size: 0.93rem; border-bottom: none; }
+.site-header nav .dropdown a:hover { background: var(--bg-soft); color: var(--navy); text-decoration: none; border-bottom: none; }
+.dropdown .dd-note { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
+.dropdown .dd-sep { display: block; border-top: 1px solid var(--line); margin: 6px 0; }
+@media (max-width: 700px) {
+  .dropdown { position: static; box-shadow: none; border-radius: 8px; margin-top: 4px; min-width: 0; background: rgba(255,255,255,.07); }
+  .dropdown::before { display: none; }
+  .site-header nav .dropdown a { color: #dbe4f2; }
+  .site-header nav .dropdown a:hover { background: rgba(255,255,255,.1); color: #fff; }
+  .dropdown .dd-note { color: #9fb0c9; }
+}
+/* 서브사이트 보조 메뉴 줄 */
+.sub-nav { background: var(--navy-deep); }
+.sub-nav .wrap { display: flex; gap: 20px; padding-top: 8px; padding-bottom: 8px; flex-wrap: wrap; }
+.sub-nav a { color: #c9d4e5; font-size: 0.9rem; }
+.sub-nav a:hover { color: #fff; text-decoration: none; }

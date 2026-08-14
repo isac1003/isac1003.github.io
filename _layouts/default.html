@@ -45,12 +45,36 @@
   <div class="wrap">
     <a class="site-title" href="{{ '/' | relative_url }}"><img class="site-logo" src="{{ '/assets/logo-mark-white.png' | relative_url }}" alt="" width="32" height="36">{{ site.title }}</a>
     <nav aria-label="주 메뉴">
-      <a href="{{ '/services/' | relative_url }}">서비스</a>
-      <a href="{{ '/startup/' | relative_url }}">스타트업</a>
-      <a href="{{ '/projects/' | relative_url }}">수행실적</a>
-      <a href="{{ '/insights/' | relative_url }}">데이터경영</a>
-      <a href="{{ '/briefing/' | relative_url }}">지원사업 브리핑</a>
-      <a href="{{ '/about/' | relative_url }}">회사소개</a>
+      <span class="nav-item"><a href="{{ '/services/' | relative_url }}">서비스 <span class="caret">▾</span></a>
+        <span class="dropdown">
+          <a href="{{ '/services/sales/' | relative_url }}">매출 데이터 진단</a>
+          <a href="{{ '/services/production/' | relative_url }}">생산·품질 데이터 진단</a>
+          <a href="{{ '/services/evaluation/' | relative_url }}">경영진단·조사·평가</a>
+          <a href="{{ '/services/export/' | relative_url }}">수출 시장전략</a>
+          <a href="{{ '/services/rnd/' | relative_url }}">R&amp;D기획·기술사업화</a>
+          <a href="{{ '/services/startup/' | relative_url }}">창업기업 성장·투자유치</a>
+          <span class="dd-sep"></span>
+          <a href="{{ '/business/' | relative_url }}">기업을 위한 서비스</a>
+          <a href="{{ '/startup/' | relative_url }}">스타트업을 위한 서비스</a>
+        </span>
+      </span>
+      <span class="nav-item"><a href="{{ '/insights/' | relative_url }}">정보제공 <span class="caret">▾</span></a>
+        <span class="dropdown">
+          <a href="{{ '/insights/' | relative_url }}">데이터로 보는 경영<span class="dd-note">경영·시장 데이터 해설</span></a>
+          <a href="{{ '/briefing/' | relative_url }}">지원사업 브리핑<span class="dd-note">창업·중소기업 공고 정리</span></a>
+          <span class="dd-sep"></span>
+          <a href="https://startup.maxconsulting.or.kr">MAX 스타트업랩<span class="dd-note">해외 창업 케이스 심층분석</span></a>
+          <a href="https://ax.maxconsulting.or.kr">MAX AX랩<span class="dd-note">사업경영, AI로 날개 달다</span></a>
+        </span>
+      </span>
+      <span class="nav-item"><a href="{{ '/about/' | relative_url }}">회사소개 <span class="caret">▾</span></a>
+        <span class="dropdown">
+          <a href="{{ '/about/' | relative_url }}">회사소개</a>
+          <a href="{{ '/history/' | relative_url }}">걸어온 길</a>
+          <a href="{{ '/projects/' | relative_url }}">수행실적</a>
+          <a href="{{ '/faq/' | relative_url }}">자주 묻는 질문</a>
+        </span>
+      </span>
       <a class="nav-cta" href="{{ '/contact/' | relative_url }}">문의하기</a>
     </nav>
   </div>
@@ -79,6 +103,21 @@ document.querySelectorAll('main table').forEach(function(t){
 // 외부 링크는 새 탭에서 열기 (사이트 이탈 방지)
 document.querySelectorAll('a[href^="http"]').forEach(function(a){
   if (a.hostname !== location.hostname) { a.target = "_blank"; a.rel = "noopener"; }
+});
+// 계층형 메뉴: 첫 클릭은 펼치기, 두 번째 클릭은 이동 (모바일 대응)
+document.querySelectorAll('.nav-item > a').forEach(function(a){
+  if (!a.parentElement.querySelector('.dropdown')) return;
+  a.addEventListener('click', function(e){
+    var item = a.parentElement;
+    if (!item.classList.contains('open')) {
+      e.preventDefault();
+      document.querySelectorAll('.nav-item.open').forEach(function(o){ o.classList.remove('open'); });
+      item.classList.add('open');
+    }
+  });
+});
+document.addEventListener('click', function(e){
+  if (!e.target.closest('.nav-item')) document.querySelectorAll('.nav-item.open').forEach(function(o){ o.classList.remove('open'); });
 });
 </script>
 </body>
