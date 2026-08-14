@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 수출 시장전략 — 어느 시장에 어떻게 들어갈지 데이터로 정합니다
+title: "수출 시장전략: 어느 시장에 어떻게 들어갈지 데이터로 정합니다"
 description: 글로벌 시장 데이터 기반 수출 목표시장 선정, 진입전략, 바이어 발굴, AI 현지화 마케팅. 코트라 수출바우처 컨설팅기관 5년 연속, K-Food 수출 특화.
 permalink: /services/export/
 ---

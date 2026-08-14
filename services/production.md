@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 생산 데이터 진단 — 불량과 원가의 원인을 데이터에서 찾습니다
+title: "생산 데이터 진단: 불량과 원가의 원인을 데이터에서 찾습니다"
 description: 제조 중소기업의 공정·불량·원가 데이터를 분석해 불량 원인과 원가 절감 포인트를 찾아주는 데이터 기반 컨설팅입니다.
 permalink: /services/production/
 ---

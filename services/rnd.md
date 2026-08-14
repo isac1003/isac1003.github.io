@@ -1,6 +1,6 @@
 ---
 layout: default
-title: R&D기획·기술사업화 — 무엇을 개발할지 데이터로 정합니다
+title: "R&D기획·기술사업화: 무엇을 개발할지 데이터로 정합니다"
 description: 기술·시장 데이터 기반 R&D 과제 기획과 기술사업화 전주기 지원. 식품·반려동물·IT·의료·화장품·에너지 등 다양한 산업의 R&D과제 선정 실적.
 permalink: /services/rnd/
 ---

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 창업기업 성장·투자유치 — 시장 데이터로 성장의 방향을 잡습니다
+title: "창업기업 성장·투자유치: 시장 데이터로 성장의 방향을 잡습니다"
 description: 등록 액셀러레이터 맥스컨설팅의 창업기업 성장지원. 시장 데이터 기반 BM 고도화, IR 코칭, 투자유치 지원. 누적 약 1,600개사 지원.
 permalink: /services/startup/
 ---
