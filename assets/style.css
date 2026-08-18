@@ -234,3 +234,27 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--green); outline
 .sub-nav .wrap { display: flex; gap: 20px; padding-top: 8px; padding-bottom: 8px; flex-wrap: wrap; }
 .sub-nav a { color: #c9d4e5; font-size: 0.9rem; }
 .sub-nav a:hover { color: #fff; text-decoration: none; }
+
+/* ── 모바일 햄버거 메뉴 ── */
+.nav-toggle { display: none; margin-left: auto; background: transparent; border: 1px solid rgba(255,255,255,.28); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+.nav-toggle span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; }
+.nav-toggle span + span { margin-top: 4px; }
+.nav-toggle[aria-expanded="true"] { background: rgba(255,255,255,.12); }
+@media (max-width: 780px) {
+  .nav-toggle { display: block; }
+  .site-header .wrap { gap: 8px 12px; }
+  .site-header nav { display: none; flex-basis: 100%; width: 100%; }
+  .site-header nav.open { display: block; flex: 0 0 240px; width: 240px; margin: 10px 0 0 auto; background: rgba(255,255,255,.07); border-radius: 10px; padding: 2px 12px 10px; }
+  .nav-item { display: block; width: 100%; border-top: 1px solid rgba(255,255,255,.13); }
+  .nav-item:first-child { border-top: none; }
+  .site-header nav > .nav-item > a { display: block; padding: 10px 2px; font-size: 0.95rem; }
+  .site-header nav a:hover { border-bottom-color: transparent; }
+  .nav-item:hover > .dropdown { display: none; }
+  .nav-item.open > .dropdown { display: block; }
+  .dropdown { padding: 0 0 6px; margin-top: 0; background: transparent; }
+  .site-header nav .dropdown a { padding: 7px 10px; font-size: 0.88rem; }
+  .dropdown .dd-note { display: none; }
+  .dropdown .dd-sep { margin: 4px 0; }
+  .site-header nav a.nav-cta { display: block; text-align: center; margin: 10px 0 2px; padding: 9px 12px; font-size: 0.92rem; }
+  .nav-item > a .caret { float: right; opacity: .8; }
+}
