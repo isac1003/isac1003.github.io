@@ -287,7 +287,8 @@ header .me b{display:block;font-size:13px;color:var(--ink-2);font-weight:600}
     <button class="btn-primary" id="btn-setup">연결하기</button>
     <p class="hint">
       구글 스프레드시트 → 확장 프로그램 → Apps Script 에서 배포하면 나오는
-      <b>웹 앱 URL</b>을 붙여넣으세요.<br>설치 순서는 README에 있습니다.
+      <b>웹 앱 URL</b>을 붙여넣으세요.<br>
+      담당자에게 <b>연결 링크</b>를 받으셨다면 그 링크로 여시면 이 화면이 뜨지 않습니다.
     </p>
   </div>
 </div>
@@ -351,7 +352,17 @@ header .me b{display:block;font-size:13px;color:var(--ink-2);font-weight:600}
    조직: 목장 › 순 › 교인 / 권한: 관리자·목장·순장
    ══════════════════════════════════════════════════════════════ */
 
+/**
+ * 연결 주소를 여기에 적어 두면 첫 화면을 건너뜁니다.
+ * 저장소가 공개라면 비워 두고, 아래 '#api=...' 링크 방식을 쓰세요.
+ */
+var DEFAULT_API = '';
+
 var LS = { api: 'church.api', token: 'church.token', cache: 'church.cache', last: 'church.lastUser' };
+
+function isWebAppUrl(u) {
+  return /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec(\?|$)/.test(String(u || '').trim());
+}
 
 var EMPTY = {
   me: null, members: [], prayers: [], visits: [], accounts: [],
@@ -362,7 +373,7 @@ var EMPTY = {
 };
 
 var state = {
-  api: localStorage.getItem(LS.api) || '',
+  api: localStorage.getItem(LS.api) || DEFAULT_API,
   token: localStorage.getItem(LS.token) || '',
   data: JSON.parse(JSON.stringify(EMPTY)),
   view: 'home',
@@ -473,8 +484,38 @@ function loadCache() {
 }
 
 /* ── 시작 ─────────────────────────────────────────────── */
+/**
+ * 주소 뒤에 #api=... 를 붙여 열면 연결 주소가 저장됩니다.
+ * 링크 한 번만 보내면 각자 주소를 입력할 일이 없습니다.
+ * (# 뒤쪽은 서버로 전송되지 않고, 읽은 뒤 주소창에서 지웁니다.)
+ */
+function adoptApiFromLink() {
+  var raw = location.hash.replace(/^#/, '') || location.search.replace(/^\?/, '');
+  if (!raw) return;
+
+  var found = '';
+  raw.split('&').forEach(function (pair) {
+    var i = pair.indexOf('=');
+    if (i > 0 && pair.slice(0, i) === 'api') {
+      try { found = decodeURIComponent(pair.slice(i + 1)); } catch (e) { found = ''; }
+    }
+  });
+  if (!isWebAppUrl(found)) return;
+
+  if (found !== state.api) {
+    // 다른 시트로 바뀌었을 수 있으니 로그인과 캐시는 비웁니다
+    localStorage.setItem(LS.api, found);
+    localStorage.removeItem(LS.token);
+    localStorage.removeItem(LS.cache);
+    state.api = found;
+    state.token = '';
+  }
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+}
+
 function boot() {
   bindGlobal();
+  adoptApiFromLink();
   if (!state.api) { show('scr-setup'); return; }
   if (!state.token) { showLogin(); return; }
   openApp();
@@ -584,7 +625,7 @@ function logout() {
 function bindGlobal() {
   $('#btn-setup').addEventListener('click', function () {
     var url = $('#in-api').value.trim();
-    if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec/.test(url)) {
+    if (!isWebAppUrl(url)) {
       $('#err-setup').textContent = '웹 앱 주소 형식이 아닙니다. /exec 로 끝나야 합니다.';
       return;
     }
@@ -631,6 +672,13 @@ function bindGlobal() {
   });
 
   window.addEventListener('online', function () { sync(false); });
+
+  // 앱을 열어 둔 채로 연결 링크를 눌렀을 때도 반영되게 합니다
+  window.addEventListener('hashchange', function () {
+    var before = state.api;
+    adoptApiFromLink();
+    if (state.api !== before) location.reload();
+  });
 }
 
 function doLogin() {
