@@ -1,0 +1,1591 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1d4b46">
+<title>교회 관리</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>⛪</text></svg>">
+<style>
+:root{
+  --bg:#f6f5f2; --card:#fff; --line:#e3e0d9; --line-soft:#efece6;
+  --ink:#23211d; --ink-2:#5d594f; --ink-3:#8d887c;
+  --accent:#1d4b46; --accent-soft:#e6efed; --on-accent:#fff;
+  --warn:#a4571b; --warn-soft:#fbf0e3;
+  --ok:#2f6b3a; --ok-soft:#e8f2e9;
+  --danger:#a33; --radius:14px;
+  color-scheme:light;
+  --shadow:0 1px 2px rgba(35,33,29,.06), 0 4px 14px rgba(35,33,29,.05);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#16181a; --card:#1e2124; --line:#31363a; --line-soft:#282c30;
+    --ink:#e8e6e1; --ink-2:#aaa69e; --ink-3:#7c776e;
+    --accent:#6cb7ab; --accent-soft:#1e3733; --on-accent:#0a2320;
+    --warn:#d99a5b; --warn-soft:#33281c;
+    --ok:#7bbd87; --ok-soft:#1e2d21;
+    --danger:#e08585;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.24);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",
+    "Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  font-size:16px; line-height:1.55; -webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:var(--accent);text-decoration:none}
+
+/* ── 전체 화면(설정·로그인) ───────────────────────────── */
+.screen{
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  padding:24px; background:var(--bg); z-index:60;
+}
+.screen[hidden]{display:none}
+.screen .box{width:100%;max-width:360px;text-align:center}
+.screen h1{font-size:22px;margin:0 0 6px;letter-spacing:-.02em}
+.screen p{color:var(--ink-2);font-size:14px;margin:0 0 22px}
+.screen input{
+  width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;
+  background:var(--card);text-align:center;margin-bottom:10px;
+}
+.screen input[type=password]{letter-spacing:.4em;font-size:20px}
+.btn-primary{
+  width:100%;padding:14px;border-radius:12px;background:var(--accent);color:var(--on-accent);
+  font-weight:600;
+}
+.btn-primary:disabled{opacity:.5}
+.screen .hint{font-size:12.5px;color:var(--ink-3);margin-top:16px;line-height:1.6}
+.err{color:var(--danger);font-size:13.5px;min-height:20px;margin:6px 0 0}
+
+/* ── 헤더 / 탭 ───────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:30;background:var(--bg);
+  border-bottom:1px solid var(--line-soft);
+  padding:10px 16px 8px;display:flex;align-items:center;gap:10px;
+}
+header .title{font-weight:700;letter-spacing:-.02em;font-size:17px}
+header .today{color:var(--ink-3);font-size:13px;margin-left:auto}
+header button.icon{
+  width:32px;height:32px;border-radius:9px;color:var(--ink-2);
+  display:grid;place-items:center;font-size:15px;
+}
+header button.icon:active{background:var(--line-soft)}
+.syncing{color:var(--accent);animation:spin 1s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+nav.tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;
+  background:color-mix(in srgb,var(--card) 97%,transparent);
+  backdrop-filter:saturate(180%) blur(12px);
+  border-top:1px solid var(--line);
+  padding-bottom:var(--safe-b);
+}
+nav.tabs button{
+  flex:1;padding:8px 2px 7px;font-size:11px;color:var(--ink-3);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+nav.tabs button .ic{font-size:18px;line-height:1}
+nav.tabs button.on{color:var(--accent);font-weight:600}
+nav.tabs button[hidden]{display:none}   /* hidden 속성이 display:flex 에 지지 않도록 */
+
+main{padding:14px 16px calc(84px + var(--safe-b));max-width:720px;margin:0 auto}
+section[hidden]{display:none}
+
+/* ── 공용 조각 ───────────────────────────────────────── */
+.card{
+  background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:14px 15px;margin-bottom:12px;
+}
+.card h2{font-size:14px;margin:0 0 10px;color:var(--ink-2);font-weight:600;
+  display:flex;align-items:center;gap:6px}
+.card h2 .count{color:var(--ink-3);font-weight:400}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{
+  background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+  padding:11px 8px;text-align:center;box-shadow:var(--shadow);
+}
+.stat .n{font-size:21px;font-weight:700;letter-spacing:-.03em;display:block;line-height:1.2}
+.stat .l{font-size:11px;color:var(--ink-3);display:block;margin-top:2px}
+.stat.alert .n{color:var(--warn)}
+
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line-soft)}
+.row:first-of-type{border-top:0}
+.row .nm{font-weight:600;letter-spacing:-.01em}
+.row .sub{font-size:12.5px;color:var(--ink-3)}
+.row .right{margin-left:auto;text-align:right;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.tel{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:var(--accent-soft);color:var(--accent);font-size:14px;flex:none}
+.pill{
+  display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:99px;
+  background:var(--line-soft);color:var(--ink-2);
+}
+.pill.d0{background:var(--warn-soft);color:var(--warn);font-weight:600}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.empty{color:var(--ink-3);font-size:13.5px;text-align:center;padding:14px 0}
+
+.bars{display:flex;align-items:flex-end;gap:6px;height:78px;margin:4px 0 2px}
+.bars .b{flex:1;max-width:44px;display:flex;flex-direction:column;justify-content:flex-end;
+  gap:3px;height:100%}
+.bars .b i{display:block;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px}
+.bars .b i.on{background:var(--accent-soft)}
+.bars .b span{font-size:10px;color:var(--ink-3);text-align:center}
+
+/* ── 도구 막대 ───────────────────────────────────────── */
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.toolbar input[type=search],.toolbar input[type=date],.toolbar select{
+  padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--card);
+  min-width:0;
+}
+.toolbar input[type=search]{flex:1}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:10px;
+  scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{
+  flex:none;padding:6px 12px;border-radius:99px;font-size:13px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-2);
+}
+.chips button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:34px;height:36px;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);color:var(--ink-2)}
+
+/* ── 출결 ────────────────────────────────────────────── */
+.att-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line-soft)}
+.att-row:first-child{border-top:0}
+.att-row .who{min-width:0;flex:1}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.seg button{padding:7px 0;width:44px;font-size:12.5px;color:var(--ink-3);
+  border-left:1px solid var(--line-soft)}
+.seg button:first-child{border-left:0}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+.seg button.on[data-v="결석"]{background:#9c5518;color:#fff}
+.seg button.on[data-v="온라인"]{background:#41639a;color:#fff}
+.savebar{
+  position:fixed;left:0;right:0;bottom:calc(58px + var(--safe-b));z-index:35;
+  padding:0 16px 8px;max-width:720px;margin:0 auto;
+  display:flex;gap:10px;align-items:center;
+}
+.savebar .inner{
+  flex:1;display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:8px 8px 8px 13px;
+  box-shadow:0 6px 20px rgba(35,33,29,.12);
+}
+.savebar .sum{font-size:12.5px;color:var(--ink-2);flex:1;line-height:1.35}
+.savebar button{padding:9px 16px;border-radius:9px;background:var(--accent);color:var(--on-accent);
+  font-weight:600;font-size:14px;flex:none}
+.savebar button:disabled{background:var(--line);color:var(--ink-3)}
+
+/* ── 목록 카드 ───────────────────────────────────────── */
+.item{
+  background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+  padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);
+  display:flex;gap:10px;align-items:flex-start;
+}
+.item .body{flex:1;min-width:0}
+.item .head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.item .head .nm{font-weight:600}
+.item .txt{font-size:14px;color:var(--ink-2);margin-top:4px;white-space:pre-wrap;
+  overflow-wrap:anywhere}
+.item .meta{font-size:12px;color:var(--ink-3);margin-top:5px}
+.item.done{opacity:.62}
+.fab{
+  position:fixed;right:16px;bottom:calc(72px + var(--safe-b));z-index:36;
+  width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--on-accent);
+  font-size:26px;line-height:1;display:grid;place-items:center;
+  box-shadow:0 6px 20px rgba(29,75,70,.35);
+}
+
+/* ── 모달 시트 ───────────────────────────────────────── */
+.sheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet .veil{position:absolute;inset:0;background:rgba(20,18,15,.42)}
+.sheet .panel{
+  position:relative;width:100%;max-width:520px;background:var(--bg);
+  border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;
+  padding:8px 16px calc(20px + var(--safe-b));
+  animation:up .18s ease-out;
+}
+@keyframes up{from{transform:translateY(24px);opacity:.4}}
+@media (min-width:560px){
+  .sheet{align-items:center}
+  .sheet .panel{border-radius:18px;max-height:86vh}
+}
+.sheet .grab{width:36px;height:4px;border-radius:2px;background:var(--line);
+  margin:6px auto 12px}
+.sheet h3{margin:0 0 14px;font-size:17px;letter-spacing:-.02em}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;color:var(--ink-2);margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);
+}
+.field textarea{min-height:92px;resize:vertical;line-height:1.55}
+.field input:disabled,.field select:disabled{
+  background:var(--line-soft);color:var(--ink-3);cursor:not-allowed;
+}
+.field.inline{display:flex;align-items:center;gap:8px}
+.field.inline input[type=checkbox]{width:18px;height:18px;margin:0}
+.field.inline label{margin:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .actions{display:flex;gap:8px;margin-top:18px}
+.sheet .actions button{flex:1;padding:13px;border-radius:11px;font-weight:600}
+.sheet .actions .save{background:var(--accent);color:var(--on-accent)}
+.sheet .actions .cancel{background:var(--card);border:1px solid var(--line);color:var(--ink-2)}
+.sheet .actions .del{flex:none;width:52px;background:var(--card);
+  border:1px solid var(--line);color:var(--danger)}
+
+/* ── 토스트 / 배너 ───────────────────────────────────── */
+#toast{
+  position:fixed;left:50%;bottom:calc(96px + var(--safe-b));transform:translateX(-50%);
+  z-index:90;background:#23211d;color:#fff;padding:10px 16px;border-radius:99px;
+  font-size:13.5px;box-shadow:0 6px 20px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .18s;max-width:90vw;text-align:center;
+}
+#toast.show{opacity:1}
+#toast.bad{background:#8e2b2b}
+.banner{
+  background:var(--warn-soft);color:var(--warn);font-size:13px;
+  padding:8px 16px;text-align:center;border-bottom:1px solid var(--line-soft);
+}
+.banner[hidden]{display:none}
+</style><style>
+/* 로그인 이름 고르기 */
+.who-list{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;
+  margin-bottom:12px;text-align:left}
+.who-list button{
+  display:flex;align-items:center;gap:8px;padding:11px 13px;border-radius:11px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);
+}
+.who-list button.on{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.who-list button .r{margin-left:auto;font-size:12px;color:var(--ink-3);font-weight:400}
+.scope-tag{font-size:11.5px;color:var(--ink-3);display:block;margin-top:-2px}
+header .me{font-size:12px;color:var(--ink-3);margin-left:auto;text-align:right;line-height:1.3}
+header .me b{display:block;font-size:13px;color:var(--ink-2);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- ─────────────── 최초 설정 ─────────────── -->
+<div class="screen" id="scr-setup" hidden>
+  <div class="box">
+    <h1>교회 관리</h1>
+    <p>구글 시트와 연결할 주소를 한 번만 입력하면 됩니다.</p>
+    <input type="url" id="in-api" placeholder="https://script.google.com/macros/s/.../exec"
+           autocomplete="off" autocapitalize="off" spellcheck="false">
+    <p class="err" id="err-setup"></p>
+    <button class="btn-primary" id="btn-setup">연결하기</button>
+    <p class="hint">
+      구글 스프레드시트 → 확장 프로그램 → Apps Script 에서 배포하면 나오는
+      <b>웹 앱 URL</b>을 붙여넣으세요.<br>설치 순서는 README에 있습니다.
+    </p>
+  </div>
+</div>
+
+<!-- ─────────────── 로그인 ─────────────── -->
+<div class="screen" id="scr-login" hidden>
+  <div class="box">
+    <h1>교회 관리</h1>
+    <p id="login-sub">어느 분이신가요?</p>
+    <div class="who-list" id="who-list"></div>
+    <input type="password" id="in-pw" autocomplete="current-password" placeholder="비밀번호">
+    <p class="err" id="err-login"></p>
+    <button class="btn-primary" id="btn-login">들어가기</button>
+    <p class="hint"><a href="#" id="lnk-reset">연결 주소 다시 설정</a></p>
+  </div>
+</div>
+
+<!-- ─────────────── 본 화면 ─────────────── -->
+<div id="app" hidden>
+  <header>
+    <span class="title">교회 관리</span>
+    <span class="me" id="hd-me"></span>
+    <button class="icon" id="btn-sync" title="새로 고침">⟳</button>
+    <button class="icon" id="btn-menu" title="설정">⋯</button>
+  </header>
+  <div class="banner" id="banner" hidden></div>
+
+  <main>
+    <section id="v-home"></section>
+    <section id="v-attend" hidden></section>
+    <section id="v-members" hidden></section>
+    <section id="v-prayer" hidden></section>
+    <section id="v-visit" hidden></section>
+    <section id="v-admin" hidden></section>
+  </main>
+
+  <nav class="tabs" id="tabs">
+    <button data-v="home"><span class="ic">🏠</span>대시보드</button>
+    <button data-v="attend"><span class="ic">✓</span>출결</button>
+    <button data-v="members"><span class="ic">👥</span>명단</button>
+    <button data-v="prayer"><span class="ic">🙏</span>기도</button>
+    <button data-v="visit"><span class="ic">🚪</span>심방</button>
+    <button data-v="admin" id="tab-admin" hidden><span class="ic">⚙</span>계정</button>
+  </nav>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="veil" data-close></div>
+  <div class="panel" id="sheet-panel"></div>
+</div>
+<div id="toast"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* ══════════════════════════════════════════════════════════════
+   교회 관리 — 화면
+   데이터는 구글 시트에 있고 이 파일은 화면만 담당합니다.
+   열자마자 캐시로 그린 뒤 갱신은 뒤에서 하기 때문에 기다릴 일이 거의 없습니다.
+   조직: 목장 › 순 › 교인 / 권한: 관리자·목장·순장
+   ══════════════════════════════════════════════════════════════ */
+
+var LS = { api: 'church.api', token: 'church.token', cache: 'church.cache', last: 'church.lastUser' };
+
+var EMPTY = {
+  me: null, members: [], prayers: [], visits: [], accounts: [],
+  dashboard: null, mokjangs: [], soons: [], today: '', lastSunday: '',
+  options: { memberStatus: ['재적', '장기결석', '이명', '별세'],
+             visitMethods: ['심방', '전화', '문자', '만남', '기타'],
+             roles: ['관리자', '목장', '순장'] }
+};
+
+var state = {
+  api: localStorage.getItem(LS.api) || '',
+  token: localStorage.getItem(LS.token) || '',
+  data: JSON.parse(JSON.stringify(EMPTY)),
+  view: 'home',
+  loginPick: null,
+  attend: { date: '', records: {}, base: {}, loading: false, loaded: false, loadedDate: '' },
+  filters: { attendGroup: '', memberQuery: '', memberGroup: '', prayer: '진행중' },
+  syncing: false
+};
+
+var $  = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+function esc(s) {
+  return String(s === undefined || s === null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* ── 날짜 ─────────────────────────────────────────────── */
+function pad2(n) { return ('0' + n).slice(-2); }
+
+function todayStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+}
+
+function shiftDate(s, days) {
+  var d = new Date(s + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+}
+
+function lastSunday() {
+  return shiftDate(todayStr(), -new Date(todayStr() + 'T00:00:00').getDay());
+}
+
+var WD = ['일', '월', '화', '수', '목', '금', '토'];
+
+function prettyDate(s) {
+  if (!s) return '';
+  var d = new Date(s + 'T00:00:00');
+  if (isNaN(d)) return s;
+  return (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + WD[d.getDay()] + ')';
+}
+
+function shortDate(s) {
+  var m = String(s || '').match(/(\d{2})-(\d{2})$/);
+  return m ? Number(m[1]) + '.' + Number(m[2]) : (s || '');
+}
+
+function ageOf(birth) {
+  var m = String(birth || '').match(/^(\d{4})-/);
+  return m ? (new Date().getFullYear() - Number(m[1]) + 1) + '세' : '';
+}
+
+/* ── 서버 ─────────────────────────────────────────────── */
+function api(action, payload) {
+  return fetch(state.api, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ action: action, token: state.token }, payload || {})),
+    redirect: 'follow'
+  }).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j || !j.ok) throw new Error((j && j.error) || '요청에 실패했습니다.');
+    return j.data;
+  });
+}
+
+function toast(msg, bad) {
+  var t = $('#toast');
+  t.textContent = msg;
+  t.className = bad ? 'show bad' : 'show';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function () { t.className = ''; }, bad ? 3800 : 1900);
+}
+
+function banner(msg) {
+  var b = $('#banner');
+  if (!msg) { b.hidden = true; return; }
+  b.textContent = msg;
+  b.hidden = false;
+}
+
+function handleError(err) {
+  var msg = (err && err.message) || '문제가 생겼습니다.';
+  if (/로그인|중지된 계정/.test(msg)) { logout(); toast(msg, true); return; }
+  toast(msg, true);
+}
+
+/* ── 캐시 ─────────────────────────────────────────────── */
+var CACHED = ['me', 'members', 'prayers', 'visits', 'accounts',
+              'dashboard', 'mokjangs', 'soons', 'options'];
+
+function saveCache() {
+  try {
+    var o = {};
+    CACHED.forEach(function (k) { o[k] = state.data[k]; });
+    localStorage.setItem(LS.cache, JSON.stringify(o));
+  } catch (e) { /* 저장 공간이 없으면 넘어갑니다 */ }
+}
+
+function loadCache() {
+  try {
+    var c = JSON.parse(localStorage.getItem(LS.cache) || 'null');
+    if (!c || !c.me) return false;
+    CACHED.forEach(function (k) { if (c[k] !== undefined) state.data[k] = c[k]; });
+    return true;
+  } catch (e) { return false; }
+}
+
+/* ── 시작 ─────────────────────────────────────────────── */
+function boot() {
+  bindGlobal();
+  if (!state.api) { show('scr-setup'); return; }
+  if (!state.token) { showLogin(); return; }
+  openApp();
+}
+
+function show(id) {
+  ['scr-setup', 'scr-login'].forEach(function (s) { $('#' + s).hidden = (s !== id); });
+  $('#app').hidden = (id !== 'app');
+}
+
+function showLogin() {
+  show('scr-login');
+  var list = $('#who-list');
+  list.innerHTML = '<p class="empty">불러오는 중…</p>';
+  $('#err-login').textContent = '';
+
+  api('who').then(function (d) {
+    if (!d.accounts.length) {
+      list.innerHTML = '<p class="empty">아직 계정이 없습니다.<br>' +
+        'Apps Script 편집기에서 setup() 을 실행해 주세요.</p>';
+      return;
+    }
+    var last = localStorage.getItem(LS.last) || '';
+    list.innerHTML = d.accounts.map(function (a) {
+      return '<button data-id="' + esc(a.id) + '" data-name="' + esc(a.name) + '"' +
+             (a.id === last ? ' class="on"' : '') + '>' +
+             '<span>' + esc(a.name) + '</span><span class="r">' +
+             esc(a.label.split(' · ').slice(1).join(' · ')) + '</span></button>';
+    }).join('');
+    var pre = $('button[data-id="' + last + '"]', list) || list.firstChild;
+    if (pre) pickWho(pre);
+  }).catch(function () {
+    list.innerHTML = '<p class="empty">서버에 연결할 수 없습니다.<br>' +
+      '<a href="#" id="lnk-reset2">연결 주소를 확인</a>해 주세요.</p>';
+    var l = $('#lnk-reset2');
+    if (l) l.addEventListener('click', function (e) {
+      e.preventDefault();
+      $('#in-api').value = state.api;
+      show('scr-setup');
+    });
+  });
+}
+
+function pickWho(btn) {
+  $$('#who-list button').forEach(function (b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  state.loginPick = { id: btn.dataset.id, name: btn.dataset.name };
+  setTimeout(function () { $('#in-pw').focus(); }, 40);
+}
+
+function openApp() {
+  show('app');
+  state.data.today = todayStr();
+  state.data.lastSunday = lastSunday();
+
+  var hadCache = loadCache();
+  applyMe();
+  render();
+  sync(!hadCache);
+}
+
+function applyMe() {
+  var me = state.data.me;
+  $('#hd-me').innerHTML = me
+    ? '<b>' + esc(me.name) + '</b>' + esc(me.scope || '')
+    : '';
+  $('#tab-admin').hidden = !(me && me.role === '관리자');
+}
+
+function sync(showSpinner) {
+  if (state.syncing) return Promise.resolve();
+  state.syncing = true;
+  if (showSpinner !== false) $('#btn-sync').classList.add('syncing');
+
+  return api('bootstrap').then(function (d) {
+    Object.keys(EMPTY).forEach(function (k) {
+      if (d[k] !== undefined) state.data[k] = d[k];
+    });
+    state.data.today = d.today || todayStr();
+    state.data.lastSunday = d.lastSunday || lastSunday();
+    saveCache();
+    banner('');
+    applyMe();
+    render();
+  }).catch(function (err) {
+    if (/로그인|중지된 계정/.test((err && err.message) || '')) { logout(); return; }
+    banner('연결이 원활하지 않습니다. 저장된 자료를 보여드리는 중입니다.');
+  }).then(function () {
+    state.syncing = false;
+    $('#btn-sync').classList.remove('syncing');
+  });
+}
+
+function logout() {
+  localStorage.removeItem(LS.token);
+  localStorage.removeItem(LS.cache);
+  state.token = '';
+  state.data = JSON.parse(JSON.stringify(EMPTY));
+  state.attend = { date: '', records: {}, base: {}, loading: false, loaded: false, loadedDate: '' };
+  closeSheet();
+  var bar = $('.savebar'); if (bar) bar.remove();
+  var fab = $('.fab'); if (fab) fab.remove();
+  showLogin();
+}
+
+/* ── 전역 이벤트 ──────────────────────────────────────── */
+function bindGlobal() {
+  $('#btn-setup').addEventListener('click', function () {
+    var url = $('#in-api').value.trim();
+    if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec/.test(url)) {
+      $('#err-setup').textContent = '웹 앱 주소 형식이 아닙니다. /exec 로 끝나야 합니다.';
+      return;
+    }
+    localStorage.setItem(LS.api, url);
+    state.api = url;
+    $('#err-setup').textContent = '';
+    showLogin();
+  });
+
+  $('#in-api').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') $('#btn-setup').click();
+  });
+
+  $('#who-list').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-id]');
+    if (b) pickWho(b);
+  });
+
+  $('#btn-login').addEventListener('click', doLogin);
+  $('#in-pw').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  $('#lnk-reset').addEventListener('click', function (e) {
+    e.preventDefault();
+    $('#in-api').value = state.api;
+    show('scr-setup');
+  });
+
+  $('#btn-sync').addEventListener('click', function () { sync(true); });
+  $('#btn-menu').addEventListener('click', menuSheet);
+
+  $('#tabs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-v]');
+    if (b) go(b.dataset.v);
+  });
+
+  $('#sheet').addEventListener('click', function (e) {
+    if (e.target.hasAttribute('data-close')) closeSheet();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeSheet();
+  });
+
+  window.addEventListener('online', function () { sync(false); });
+}
+
+function doLogin() {
+  if (!state.loginPick) { $('#err-login').textContent = '이름을 골라 주세요.'; return; }
+  var pw = $('#in-pw').value;
+  if (!pw) { $('#err-login').textContent = '비밀번호를 입력해 주세요.'; return; }
+
+  var btn = $('#btn-login');
+  btn.disabled = true;
+  btn.textContent = '확인 중…';
+  $('#err-login').textContent = '';
+
+  api('login', { name: state.loginPick.id, password: pw }).then(function (d) {
+    state.token = d.token;
+    localStorage.setItem(LS.token, d.token);
+    localStorage.setItem(LS.last, state.loginPick.id);
+    state.data.me = d.me;
+    $('#in-pw').value = '';
+    go('home');
+    openApp();
+  }).catch(function (err) {
+    $('#err-login').textContent = (err && err.message) || '접속할 수 없습니다.';
+  }).then(function () {
+    btn.disabled = false;
+    btn.textContent = '들어가기';
+  });
+}
+
+function go(v) {
+  state.view = v;
+  $$('#tabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === v); });
+  ['home', 'attend', 'members', 'prayer', 'visit', 'admin'].forEach(function (n) {
+    var el = $('#v-' + n);
+    if (el) el.hidden = (n !== v);
+  });
+  var bar = $('.savebar'); if (bar) bar.remove();
+  var fab = $('.fab'); if (fab) fab.remove();
+  window.scrollTo(0, 0);
+  render();
+}
+
+function render() {
+  ({ home: renderHome, attend: renderAttend, members: renderMembers,
+     prayer: renderPrayer, visit: renderVisit, admin: renderAdmin }[state.view] || renderHome)();
+}
+
+/* ── 작은 도우미 ──────────────────────────────────────── */
+function me() { return state.data.me || { role: '순장', mokjang: '', soon: '', scope: '' }; }
+function isAdmin() { return me().role === '관리자'; }
+
+function memberById(id) {
+  for (var i = 0; i < state.data.members.length; i++) {
+    if (state.data.members[i].id === id) return state.data.members[i];
+  }
+  return null;
+}
+
+function groupOf(m) {
+  return [m.mokjang, m.soon].filter(Boolean).join(' · ');
+}
+
+/** 지금 권한에서 사람을 나눌 기준: 관리자는 목장으로, 목장은 순으로, 순장은 나누지 않습니다. */
+function groupKey() {
+  return isAdmin() ? 'mokjang' : (me().role === '목장' ? 'soon' : '');
+}
+
+function telLink(phone) {
+  if (!phone) return '';
+  return '<a class="tel" href="tel:' + esc(String(phone).replace(/[^0-9+]/g, '')) + '">📞</a>';
+}
+
+function uniq(arr) {
+  var seen = {}, out = [];
+  arr.forEach(function (v) {
+    var s = String(v || '').trim();
+    if (!s || seen[s]) return;
+    seen[s] = 1; out.push(s);
+  });
+  return out.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+}
+
+/* ══════════════════════ 대시보드 ══════════════════════ */
+function renderHome() {
+  var d = state.data.dashboard, el = $('#v-home');
+  if (!d) {
+    el.innerHTML = '<div class="card"><p class="empty">자료를 불러오는 중입니다…</p></div>';
+    return;
+  }
+
+  var rate = '';
+  if (d.recentService) {
+    var s = d.recentService;
+    var present = (s['출석'] || 0) + (s['온라인'] || 0);
+    var whole = present + (s['결석'] || 0);
+    rate = whole ? Math.round(present / whole * 100) + '%' : '';
+  }
+
+  var h = '<p class="scope-tag" style="margin:0 4px 10px">' +
+          esc(prettyDate(todayStr())) + ' · ' + esc(d.scope || '') + '</p>';
+
+  h += '<div class="stats">' +
+    stat(d.counts.active, '재적') +
+    stat(d.recentService ? ((d.recentService['출석'] || 0) + (d.recentService['온라인'] || 0)) : '—',
+         '지난 주일' + (rate ? ' ' + rate : '')) +
+    stat(d.counts.openPrayers, '기도제목') +
+    stat(d.counts.away, '살펴볼 분', d.counts.away > 0) +
+    '</div>';
+
+  h += card('🎂 이번 주 생일', d.birthdaysUpcoming.length,
+    d.birthdaysUpcoming.length
+      ? d.birthdaysUpcoming.map(function (b) {
+          var when = b.inDays === 0 ? '오늘' : (b.inDays === 1 ? '내일' : 'D-' + b.inDays);
+          return '<div class="row"><div><div class="nm">' + esc(b.name) +
+            (b.lunar ? ' <span class="pill">음력</span>' : '') + '</div>' +
+            '<div class="sub">' + esc(groupOf(b)) + '</div></div>' +
+            '<div class="right"><span class="pill ' + (b.inDays <= 1 ? 'd0' : '') + '">' + when +
+            '</span> ' + shortDate(b.md) + '</div>' + telLink(b.phone) + '</div>';
+        }).join('')
+      : '<p class="empty">이번 주에는 생일인 분이 없습니다.</p>');
+
+  if (d.birthdaysThisMonth.length) {
+    h += card('이번 달 생일', d.birthdaysThisMonth.length + '명',
+      '<p style="margin:0;font-size:14px;line-height:2;color:var(--ink-2)">' +
+      d.birthdaysThisMonth.map(function (b) {
+        return esc(b.name) + '<span class="pill" style="margin-left:3px">' +
+               shortDate(b.md) + (b.lunar ? ' 음' : '') + '</span>';
+      }).join(' &nbsp;') + '</p>');
+  }
+
+  if (d.trend && d.trend.length) {
+    var max = 1;
+    d.trend.forEach(function (t) { max = Math.max(max, (t['출석'] || 0) + (t['온라인'] || 0)); });
+    h += card('최근 출석', '',
+      '<div class="bars">' + d.trend.map(function (t) {
+        var on = t['온라인'] || 0, at = t['출석'] || 0;
+        return '<div class="b" title="' + esc(t.date) + '">' +
+          (on ? '<i class="on" style="height:' + (on / max * 58) + 'px"></i>' : '') +
+          '<i style="height:' + (at / max * 58) + 'px"></i>' +
+          '<span>' + shortDate(t.date) + '</span></div>';
+      }).join('') + '</div>' +
+      '<p style="margin:2px 0 0;font-size:11.5px;color:var(--ink-3)">아래쪽 현장 출석 · 위쪽 온라인</p>');
+  }
+
+  h += card('🕊 오래 못 뵌 분', d.awayMembers.length,
+    d.awayMembers.length
+      ? d.awayMembers.slice(0, 8).map(function (m) {
+          return '<div class="row"><div><div class="nm">' + esc(m.name) + '</div>' +
+            '<div class="sub">' + esc(groupOf(m)) + '</div></div>' +
+            '<div class="right">' + (m.days === null ? '기록 없음'
+              : m.days + '일째 · ' + shortDate(m.lastSeen)) + '</div>' +
+            telLink(m.phone) + '</div>';
+        }).join('')
+      : '<p class="empty">모두 최근에 뵈었습니다.</p>');
+
+  h += card('🙏 기도하고 있는 일', '',
+    d.openPrayers.length
+      ? d.openPrayers.map(function (p) {
+          return '<div class="row" style="align-items:flex-start">' +
+            '<div style="flex:1;min-width:0"><div class="nm">' + esc(p.name || '공동') +
+            (p.category ? ' <span class="pill">' + esc(p.category) + '</span>' : '') + '</div>' +
+            '<div class="sub" style="white-space:pre-wrap;color:var(--ink-2)">' +
+            esc(p.body) + '</div></div>' +
+            '<div class="right">' + shortDate(p.date) + '</div></div>';
+        }).join('')
+      : '<p class="empty">등록된 기도제목이 없습니다.</p>');
+
+  if (d.needVisit && d.needVisit.length) {
+    h += card('심방한 지 오래된 분', d.needVisit.length,
+      d.needVisit.slice(0, 8).map(function (m) {
+        return '<div class="row"><div><div class="nm">' + esc(m.name) + '</div>' +
+          '<div class="sub">' + esc(groupOf(m)) + '</div></div>' +
+          '<div class="right">' + (m.lastVisit ? shortDate(m.lastVisit) : '기록 없음') + '</div>' +
+          telLink(m.phone) + '</div>';
+      }).join(''));
+  }
+
+  el.innerHTML = h;
+}
+
+function card(title, count, inner) {
+  return '<div class="card"><h2>' + esc(title) +
+    (count ? ' <span class="count">' + esc(count) + '</span>' : '') + '</h2>' + inner + '</div>';
+}
+
+function stat(n, label, alert) {
+  return '<div class="stat' + (alert ? ' alert' : '') + '"><span class="n">' + esc(n) +
+    '</span><span class="l">' + esc(label) + '</span></div>';
+}
+
+
+/* ══════════════════════ 출결 ══════════════════════ */
+function activeMembers() {
+  return state.data.members.filter(function (m) {
+    return m.status !== '이명' && m.status !== '별세';
+  });
+}
+
+function groupChips(members, current, key) {
+  if (!key) return '';
+  var groups = uniq(members.map(function (m) { return m[key]; }));
+  if (groups.length < 2) return '';
+  return '<div class="chips"><button data-g="" class="' + (current ? '' : 'on') + '">전체 ' +
+    members.length + '</button>' +
+    groups.map(function (g) {
+      var n = members.filter(function (m) { return m[key] === g; }).length;
+      return '<button data-g="' + esc(g) + '" class="' + (current === g ? 'on' : '') + '">' +
+        esc(g) + ' ' + n + '</button>';
+    }).join('') + '</div>';
+}
+
+function renderAttend() {
+  var el = $('#v-attend');
+  if (!state.attend.date) state.attend.date = state.data.lastSunday || lastSunday();
+
+  var members = activeMembers();
+  var key = groupKey();
+  var fg = state.filters.attendGroup;
+  var list = (key && fg) ? members.filter(function (m) { return m[key] === fg; }) : members;
+
+  var h = '<div class="toolbar">' +
+    '<div class="stepper"><button id="a-prev">‹</button>' +
+    '<input type="date" id="a-date" value="' + esc(state.attend.date) + '">' +
+    '<button id="a-next">›</button></div>' +
+    '<button class="pill acc" id="a-sunday" style="padding:8px 12px;font-size:13px">지난 주일</button>' +
+    '</div>';
+
+  h += groupChips(members, fg, key);
+  h += '<div class="card" style="padding:6px 15px 10px">';
+
+  if (state.attend.loading) {
+    h += '<p class="empty">불러오는 중…</p>';
+  } else if (!list.length) {
+    h += '<p class="empty">등록된 교인이 없습니다. 명단부터 채워 주세요.</p>';
+  } else {
+    list.forEach(function (m) {
+      var cur = (state.attend.records[m.id] || {}).status || '';
+      h += '<div class="att-row"><div class="who">' +
+        '<div class="nm">' + esc(m.name) + '</div>' +
+        '<div class="sub">' + esc([groupOf(m), m.role].filter(Boolean).join(' · ')) + '</div>' +
+        '</div><div class="seg" data-id="' + esc(m.id) + '">' +
+        ['출석', '온라인', '결석'].map(function (v) {
+          return '<button data-v="' + v + '" class="' + (cur === v ? 'on' : '') + '">' + v + '</button>';
+        }).join('') + '</div></div>';
+    });
+  }
+  h += '</div>';
+  el.innerHTML = h;
+
+  var bar = $('.savebar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.className = 'savebar';
+    bar.innerHTML = '<div class="inner"><span class="sum" id="a-sum"></span>' +
+                    '<button id="a-save">저장</button></div>';
+    document.body.appendChild(bar);
+    $('#a-save').addEventListener('click', saveAttendance);
+  }
+  updateAttendSummary();
+
+  $('#a-date').addEventListener('change', function () {
+    state.attend.date = this.value; loadAttendance();
+  });
+  $('#a-prev').addEventListener('click', function () {
+    state.attend.date = shiftDate(state.attend.date, -7); loadAttendance();
+  });
+  $('#a-next').addEventListener('click', function () {
+    state.attend.date = shiftDate(state.attend.date, 7); loadAttendance();
+  });
+  $('#a-sunday').addEventListener('click', function () {
+    state.attend.date = lastSunday(); loadAttendance();
+  });
+
+  var chips = $('.chips', el);
+  if (chips) chips.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]');
+    if (!b) return;
+    state.filters.attendGroup = b.dataset.g;
+    renderAttend();
+  });
+
+  if (!el._bound) { el._bound = true; el.addEventListener('click', onSegClick); }
+  if (!state.attend.loaded || state.attend.loadedDate !== state.attend.date) loadAttendance();
+}
+
+function onSegClick(e) {
+  var b = e.target.closest('.seg button');
+  if (!b) return;
+  var id = b.parentNode.dataset.id, v = b.dataset.v;
+  var cur = (state.attend.records[id] || {}).status || '';
+  var next = (cur === v) ? '' : v;
+
+  if (next) state.attend.records[id] = { status: next, memo: (state.attend.records[id] || {}).memo || '' };
+  else delete state.attend.records[id];
+
+  $$('button', b.parentNode).forEach(function (x) {
+    x.classList.toggle('on', !!next && x.dataset.v === next);
+  });
+  updateAttendSummary();
+}
+
+function updateAttendSummary() {
+  var sum = $('#a-sum');
+  if (!sum) return;
+  var c = { '출석': 0, '온라인': 0, '결석': 0 };
+  Object.keys(state.attend.records).forEach(function (k) {
+    var s = state.attend.records[k].status;
+    if (c[s] !== undefined) c[s]++;
+  });
+  var total = activeMembers().length;
+  var checked = c['출석'] + c['온라인'] + c['결석'];
+  sum.innerHTML = '<b>' + prettyDate(state.attend.date) + '</b> · 출석 ' + c['출석'] +
+    ' · 온라인 ' + c['온라인'] + ' · 결석 ' + c['결석'] +
+    '<br>아직 안 누른 분 ' + Math.max(0, total - checked) + '명';
+  $('#a-save').disabled = !isAttendDirty();
+}
+
+function isAttendDirty() {
+  var a = state.attend.records, b = state.attend.base, keys = {};
+  Object.keys(a).forEach(function (k) { keys[k] = 1; });
+  Object.keys(b).forEach(function (k) { keys[k] = 1; });
+  return Object.keys(keys).some(function (k) {
+    return ((a[k] || {}).status || '') !== ((b[k] || {}).status || '');
+  });
+}
+
+function loadAttendance() {
+  var date = state.attend.date;
+  state.attend.loading = true;
+  state.attend.loaded = true;
+  state.attend.loadedDate = date;
+  renderAttend();
+
+  api('attendance', { date: date }).then(function (d) {
+    if (state.attend.date !== date) return;   // 그새 날짜가 바뀌었으면 버립니다
+    state.attend.records = d.records || {};
+    state.attend.base = JSON.parse(JSON.stringify(d.records || {}));
+    state.attend.loading = false;
+    renderAttend();
+  }).catch(function (err) {
+    state.attend.loading = false;
+    renderAttend();
+    handleError(err);
+  });
+}
+
+function saveAttendance() {
+  var btn = $('#a-save'), date = state.attend.date, recs = [], keys = {};
+  Object.keys(state.attend.records).forEach(function (k) { keys[k] = 1; });
+  Object.keys(state.attend.base).forEach(function (k) { keys[k] = 1; });
+
+  Object.keys(keys).forEach(function (id) {
+    var now = (state.attend.records[id] || {}).status || '';
+    if (now === ((state.attend.base[id] || {}).status || '')) return;
+    recs.push({ id: id, status: now, memo: (state.attend.records[id] || {}).memo || '' });
+  });
+
+  if (!recs.length) { toast('바뀐 내용이 없습니다.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '저장 중…';
+  api('saveAttendance', { date: date, records: recs }).then(function (d) {
+    state.attend.records = d.records || {};
+    state.attend.base = JSON.parse(JSON.stringify(d.records || {}));
+    toast(recs.length + '명 저장했습니다.');
+    renderAttend();
+    sync(false);
+  }).catch(handleError).then(function () {
+    btn.textContent = '저장';
+    updateAttendSummary();
+  });
+}
+
+/* ══════════════════════ 명단 ══════════════════════ */
+function renderMembers() {
+  var el = $('#v-members');
+  var q = state.filters.memberQuery.trim();
+  var key = groupKey();
+  var fg = state.filters.memberGroup;
+
+  var list = state.data.members.filter(function (m) {
+    if (key && fg && m[key] !== fg) return false;
+    if (!q) return true;
+    return (m.name + ' ' + m.phone + ' ' + m.mokjang + ' ' + m.soon + ' ' + m.role + ' ' + m.memo)
+      .toLowerCase().indexOf(q.toLowerCase()) >= 0;
+  });
+
+  var h = '<div class="toolbar"><input type="search" id="m-q" ' +
+    'placeholder="이름·연락처·소속 검색" value="' + esc(q) + '"></div>';
+  h += groupChips(state.data.members, fg, key);
+
+  if (!list.length) {
+    h += '<div class="card"><p class="empty">' +
+      (state.data.members.length ? '찾는 분이 없습니다.'
+        : '아직 등록된 교인이 없습니다.<br>오른쪽 아래 + 로 등록해 보세요.') + '</p></div>';
+  } else {
+    list.forEach(function (m) {
+      h += '<div class="item" data-id="' + esc(m.id) + '"><div class="body">' +
+        '<div class="head"><span class="nm">' + esc(m.name) + '</span>' +
+          (m.role ? '<span class="pill acc">' + esc(m.role) + '</span>' : '') +
+          (groupOf(m) ? '<span class="pill">' + esc(groupOf(m)) + '</span>' : '') +
+          (m.status && m.status !== '재적'
+            ? '<span class="pill d0">' + esc(m.status) + '</span>' : '') +
+        '</div><div class="meta">' +
+          (m.birth ? '🎂 ' + shortDate(m.birth) + (m.lunar ? '(음)' : '') +
+                     (ageOf(m.birth) ? ' · ' + ageOf(m.birth) : '') : '') +
+          (m.phone ? (m.birth ? ' · ' : '') + esc(m.phone) : '') +
+        '</div></div>' + telLink(m.phone) + '</div>';
+    });
+  }
+  el.innerHTML = h;
+
+  $('#m-q').addEventListener('input', function () {
+    state.filters.memberQuery = this.value;
+    var pos = this.selectionStart;
+    renderMembers();
+    var n = $('#m-q');
+    n.focus();
+    n.setSelectionRange(pos, pos);
+  });
+
+  var chips = $('.chips', el);
+  if (chips) chips.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]');
+    if (!b) return;
+    state.filters.memberGroup = b.dataset.g;
+    renderMembers();
+  });
+
+  if (!el._bound) {
+    el._bound = true;
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('.tel')) return;
+      var it = e.target.closest('.item[data-id]');
+      if (it) memberForm(memberById(it.dataset.id));
+    });
+  }
+  addFab(function () { memberForm(null); });
+}
+
+function memberForm(m) {
+  var isNew = !m;
+  m = m || { id: '', name: '', gender: '', birth: '', lunar: false, phone: '',
+             mokjang: me().mokjang, soon: me().soon, role: '', joined: '',
+             address: '', status: '재적', memo: '' };
+
+  // 소속은 권한 범위 안에서만 고를 수 있습니다.
+  var mokjangField, soonField;
+  if (isAdmin()) {
+    mokjangField = '<input id="f-mokjang" list="dl-mokjang" value="' + esc(m.mokjang) + '">';
+    soonField = '<input id="f-soon" list="dl-soon" value="' + esc(m.soon) + '">';
+  } else if (me().role === '목장') {
+    mokjangField = '<input id="f-mokjang" value="' + esc(me().mokjang) + '" disabled>';
+    soonField = '<input id="f-soon" list="dl-soon" value="' + esc(m.soon) + '">';
+  } else {
+    mokjangField = '<input id="f-mokjang" value="' + esc(me().mokjang) + '" disabled>';
+    soonField = '<input id="f-soon" value="' + esc(me().soon) + '" disabled>';
+  }
+
+  openSheet(
+    (isNew ? '교인 등록' : esc(m.name) + ' 님') + '</h3>' +
+    field('이름', '<input id="f-name" value="' + esc(m.name) + '" autocomplete="off">') +
+    '<div class="grid2">' + field('목장', mokjangField) + field('순', soonField) + '</div>' +
+    datalist('dl-mokjang', state.data.mokjangs) +
+    datalist('dl-soon', uniq(state.data.members.map(function (x) { return x.soon; }))) +
+    '<div class="grid2">' +
+      field('직분', '<input id="f-role" list="dl-role" value="' + esc(m.role) + '">') +
+      field('휴대전화', '<input id="f-phone" type="tel" inputmode="tel" value="' + esc(m.phone) + '">') +
+    '</div>' +
+    datalist('dl-role', uniq(state.data.members.map(function (x) { return x.role; }))) +
+    '<div class="grid2">' +
+      field('생년월일', '<input id="f-birth" type="date" value="' +
+            esc(/^\d{4}-/.test(m.birth) ? m.birth : '') + '">') +
+      field('성별', select('f-gender', ['', '남', '여'], m.gender)) +
+    '</div>' +
+    '<div class="field inline"><input type="checkbox" id="f-lunar"' +
+      (m.lunar ? ' checked' : '') + '><label for="f-lunar">음력 생일</label></div>' +
+    '<div class="grid2">' +
+      field('등록일', '<input id="f-joined" type="date" value="' + esc(m.joined) + '">') +
+      field('상태', select('f-status', state.data.options.memberStatus, m.status || '재적')) +
+    '</div>' +
+    field('주소', '<input id="f-address" value="' + esc(m.address) + '">') +
+    field('메모', '<textarea id="f-memo">' + esc(m.memo) + '</textarea>'),
+    function () {
+      var name = $('#f-name').value.trim();
+      if (!name) { toast('이름을 입력해 주세요.', true); return false; }
+      return api('saveMember', { member: {
+        id: m.id, name: name,
+        gender: $('#f-gender').value,
+        birth: $('#f-birth').value,
+        lunar: $('#f-lunar').checked,
+        phone: $('#f-phone').value.trim(),
+        mokjang: $('#f-mokjang').value.trim(),
+        soon: $('#f-soon').value.trim(),
+        role: $('#f-role').value.trim(),
+        joined: $('#f-joined').value,
+        address: $('#f-address').value.trim(),
+        status: $('#f-status').value,
+        memo: $('#f-memo').value
+      }}).then(function () {
+        toast(isNew ? '등록했습니다.' : '저장했습니다.');
+        return sync(false);
+      });
+    },
+    isNew ? null : function () {
+      if (!confirm(m.name + ' 님을 명단에서 지울까요?\n출결·기도 기록은 시트에 남습니다.')) return false;
+      return api('deleteMember', { id: m.id }).then(function () {
+        toast('삭제했습니다.');
+        return sync(false);
+      });
+    }
+  );
+  if (isNew) setTimeout(function () { $('#f-name').focus(); }, 80);
+}
+
+
+/* ══════════════════════ 기도제목 ══════════════════════ */
+function renderPrayer() {
+  var el = $('#v-prayer'), f = state.filters.prayer;
+  var match = function (p, k) {
+    return k === '전체' ? true : (k === '진행중' ? p.status !== '응답됨' : p.status === '응답됨');
+  };
+  var list = state.data.prayers.filter(function (p) { return match(p, f); });
+
+  var h = '<div class="chips">' + ['진행중', '응답됨', '전체'].map(function (k) {
+    var n = state.data.prayers.filter(function (p) { return match(p, k); }).length;
+    return '<button data-f="' + k + '" class="' + (f === k ? 'on' : '') + '">' + k + ' ' + n + '</button>';
+  }).join('') + '</div>';
+
+  if (!list.length) {
+    h += '<div class="card"><p class="empty">기도제목이 없습니다.</p></div>';
+  } else {
+    list.forEach(function (p) {
+      var done = p.status === '응답됨';
+      h += '<div class="item' + (done ? ' done' : '') + '" data-id="' + esc(p.id) + '">' +
+        '<div class="body"><div class="head"><span class="nm">' + esc(p.name || '공동') + '</span>' +
+          (p.category ? '<span class="pill">' + esc(p.category) + '</span>' : '') +
+          (done ? '<span class="pill ok">응답</span>' : '') + '</div>' +
+        '<div class="txt">' + esc(p.body) + '</div>' +
+        '<div class="meta">' + shortDate(p.date) +
+          (done && p.answeredAt ? ' → ' + shortDate(p.answeredAt) : '') +
+          (p.answerNote ? ' · ' + esc(p.answerNote) : '') +
+          (p.author ? ' · ' + esc(p.author) : '') + '</div></div>' +
+        '<button class="tel" data-answer="' + esc(p.id) + '" title="응답 표시">' +
+          (done ? '↩' : '✓') + '</button></div>';
+    });
+  }
+  el.innerHTML = h;
+
+  $('.chips', el).addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-f]');
+    if (!b) return;
+    state.filters.prayer = b.dataset.f;
+    renderPrayer();
+  });
+
+  if (!el._bound) {
+    el._bound = true;
+    el.addEventListener('click', function (e) {
+      var a = e.target.closest('[data-answer]');
+      if (a) {
+        var p = findIn('prayers', a.dataset.answer);
+        var note = '';
+        if (p && p.status !== '응답됨') {
+          note = prompt('어떻게 응답되었는지 한 줄로 남겨 두시겠어요? (건너뛰어도 됩니다)', '') || '';
+        }
+        api('answerPrayer', { id: a.dataset.answer, note: note })
+          .then(function () { toast('바꿨습니다.'); return sync(false); })
+          .catch(handleError);
+        return;
+      }
+      var it = e.target.closest('.item[data-id]');
+      if (it) prayerForm(findIn('prayers', it.dataset.id));
+    });
+  }
+  addFab(function () { prayerForm(null); });
+}
+
+function findIn(key, id) {
+  var arr = state.data[key] || [];
+  for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return arr[i];
+  return null;
+}
+
+function prayerForm(p) {
+  var isNew = !p;
+  p = p || { id: '', memberId: '', name: '', category: '', body: '',
+             date: todayStr(), status: '진행중', answeredAt: '', answerNote: '' };
+
+  openSheet(
+    (isNew ? '기도제목 등록' : '기도제목') + '</h3>' +
+    field('누구를 위해', memberSelect('f-member', p.memberId, p.name, '공동 기도제목')) +
+    '<div class="grid2">' +
+      field('분류', '<input id="f-cat" list="dl-cat" value="' + esc(p.category) +
+            '" placeholder="건강 / 가정 / 진로…">') +
+      field('등록일', '<input id="f-date" type="date" value="' + esc(p.date || todayStr()) + '">') +
+    '</div>' +
+    datalist('dl-cat', uniq(state.data.prayers.map(function (x) { return x.category; }))) +
+    field('내용', '<textarea id="f-body" placeholder="기도할 내용을 적어 주세요.">' +
+          esc(p.body) + '</textarea>') +
+    (p.status === '응답됨'
+      ? field('응답 메모', '<textarea id="f-anote">' + esc(p.answerNote) + '</textarea>') : ''),
+    function () {
+      var body = $('#f-body').value.trim();
+      if (!body) { toast('내용을 입력해 주세요.', true); return false; }
+      return api('savePrayer', { prayer: {
+        id: p.id,
+        memberId: $('#f-member').value,
+        category: $('#f-cat').value.trim(),
+        body: body,
+        date: $('#f-date').value,
+        status: p.status,
+        answeredAt: p.answeredAt,
+        answerNote: $('#f-anote') ? $('#f-anote').value : p.answerNote
+      }}).then(function () {
+        toast('저장했습니다.');
+        return sync(false);
+      });
+    },
+    isNew ? null : function () {
+      if (!confirm('이 기도제목을 지울까요?')) return false;
+      return api('deletePrayer', { id: p.id }).then(function () {
+        toast('삭제했습니다.');
+        return sync(false);
+      });
+    }
+  );
+}
+
+
+/* ══════════════════════ 심방 ══════════════════════ */
+function renderVisit() {
+  var el = $('#v-visit'), d = state.data.dashboard, h = '';
+
+  if (d && d.needVisit && d.needVisit.length) {
+    h += card('찾아뵐 때가 된 분', d.needVisit.length + '명',
+      d.needVisit.slice(0, 10).map(function (m) {
+        return '<div class="row"><div><div class="nm">' + esc(m.name) + '</div>' +
+          '<div class="sub">' + esc(groupOf(m)) + '</div></div>' +
+          '<div class="right">' + (m.lastVisit ? '최근 ' + shortDate(m.lastVisit) : '기록 없음') +
+          '</div>' + telLink(m.phone) + '</div>';
+      }).join(''));
+  }
+
+  h += '<h2 style="font-size:14px;color:var(--ink-2);margin:16px 4px 8px">심방 기록</h2>';
+  if (!state.data.visits.length) {
+    h += '<div class="card"><p class="empty">아직 기록이 없습니다.</p></div>';
+  } else {
+    state.data.visits.forEach(function (v) {
+      h += '<div class="item" data-id="' + esc(v.id) + '"><div class="body">' +
+        '<div class="head"><span class="nm">' + esc(v.name) + '</span>' +
+          '<span class="pill acc">' + esc(v.method || '심방') + '</span>' +
+          (v.by ? '<span class="pill">' + esc(v.by) + '</span>' : '') + '</div>' +
+        (v.body ? '<div class="txt">' + esc(v.body) + '</div>' : '') +
+        '<div class="meta">' + prettyDate(v.date) + '</div></div></div>';
+    });
+  }
+  el.innerHTML = h;
+
+  if (!el._bound) {
+    el._bound = true;
+    el.addEventListener('click', function (e) {
+      if (e.target.closest('.tel')) return;
+      var it = e.target.closest('.item[data-id]');
+      if (it) visitForm(findIn('visits', it.dataset.id));
+    });
+  }
+  addFab(function () { visitForm(null); });
+}
+
+function visitForm(v) {
+  var isNew = !v;
+  v = v || { id: '', date: todayStr(), memberId: '', name: '',
+             method: '심방', by: me().name || '', body: '' };
+
+  openSheet(
+    (isNew ? '심방 기록' : '심방 기록 수정') + '</h3>' +
+    field('누구를', memberSelect('f-member', v.memberId, v.name, '')) +
+    '<div class="grid2">' +
+      field('날짜', '<input id="f-date" type="date" value="' + esc(v.date || todayStr()) + '">') +
+      field('방식', select('f-method', state.data.options.visitMethods, v.method || '심방')) +
+    '</div>' +
+    field('담당', '<input id="f-by" list="dl-by" value="' + esc(v.by) + '" placeholder="누가 다녀왔는지">') +
+    datalist('dl-by', uniq(state.data.visits.map(function (x) { return x.by; }))) +
+    field('내용', '<textarea id="f-body">' + esc(v.body) + '</textarea>'),
+    function () {
+      var id = $('#f-member').value;
+      if (!id) { toast('심방한 분을 선택해 주세요.', true); return false; }
+      return api('saveVisit', { visit: {
+        id: v.id,
+        date: $('#f-date').value,
+        memberId: id,
+        method: $('#f-method').value,
+        by: $('#f-by').value.trim(),
+        body: $('#f-body').value
+      }}).then(function () {
+        toast('저장했습니다.');
+        return sync(false);
+      });
+    },
+    isNew ? null : function () {
+      if (!confirm('이 기록을 지울까요?')) return false;
+      return api('deleteVisit', { id: v.id }).then(function () {
+        toast('삭제했습니다.');
+        return sync(false);
+      });
+    }
+  );
+}
+
+/* ══════════════════════ 계정 (관리자) ══════════════════════ */
+function renderAdmin() {
+  var el = $('#v-admin');
+  if (!isAdmin()) {
+    el.innerHTML = '<div class="card"><p class="empty">관리자만 볼 수 있습니다.</p></div>';
+    return;
+  }
+
+  var h = '<p class="scope-tag" style="margin:0 4px 10px">' +
+    '순장·목장에게 계정을 만들어 주면 각자 맡은 범위만 보게 됩니다.</p>';
+
+  var byRole = {};
+  state.data.accounts.forEach(function (a) {
+    (byRole[a.role] = byRole[a.role] || []).push(a);
+  });
+
+  ['관리자', '목장', '순장'].forEach(function (role) {
+    var list = byRole[role] || [];
+    if (!list.length) return;
+    h += '<h2 style="font-size:14px;color:var(--ink-2);margin:16px 4px 8px">' +
+      role + ' <span style="color:var(--ink-3);font-weight:400">' + list.length + '</span></h2>';
+    list.forEach(function (a) {
+      var scope = a.role === '관리자' ? '전체'
+        : [a.mokjang, a.soon].filter(Boolean).join(' · ');
+      h += '<div class="item" data-id="' + esc(a.id) + '"><div class="body">' +
+        '<div class="head"><span class="nm">' + esc(a.name) + '</span>' +
+          (scope ? '<span class="pill acc">' + esc(scope) + '</span>' : '') +
+          (a.status === '정지' ? '<span class="pill d0">정지</span>' : '') + '</div>' +
+        '<div class="meta">' + (a.lastSeen ? '최근 접속 ' + esc(a.lastSeen) : '접속한 적 없음') +
+        '</div></div></div>';
+    });
+  });
+
+  if (!state.data.accounts.length) {
+    h += '<div class="card"><p class="empty">계정이 없습니다.</p></div>';
+  }
+  el.innerHTML = h;
+
+  if (!el._bound) {
+    el._bound = true;
+    el.addEventListener('click', function (e) {
+      var it = e.target.closest('.item[data-id]');
+      if (it) accountForm(findIn('accounts', it.dataset.id));
+    });
+  }
+  addFab(function () { accountForm(null); });
+}
+
+function accountForm(a) {
+  var isNew = !a;
+  a = a || { id: '', name: '', role: '순장', mokjang: '', soon: '', status: '사용', memo: '' };
+
+  openSheet(
+    (isNew ? '계정 만들기' : esc(a.name) + ' 님 계정') + '</h3>' +
+    field('이름', '<input id="f-name" value="' + esc(a.name) + '" autocomplete="off" ' +
+          'placeholder="로그인 화면에 뜰 이름">') +
+    field('권한', select('f-role', state.data.options.roles, a.role)) +
+    '<div class="grid2">' +
+      field('목장', '<input id="f-mokjang" list="dl-mokjang" value="' + esc(a.mokjang) + '">') +
+      field('순', '<input id="f-soon" list="dl-soon" value="' + esc(a.soon) + '">') +
+    '</div>' +
+    datalist('dl-mokjang', state.data.mokjangs) +
+    datalist('dl-soon', uniq(state.data.members.map(function (x) { return x.soon; }))) +
+    '<p class="scope-tag" style="margin:-6px 2px 12px">관리자는 목장·순을 비워 두세요. ' +
+      '목장은 목장만, 순장은 목장과 순을 모두 채워야 합니다.</p>' +
+    field(isNew ? '비밀번호' : '새 비밀번호 (바꿀 때만)',
+          '<input id="f-pw" type="text" autocomplete="off" placeholder="' +
+          (isNew ? '4자 이상' : '그대로 두면 바뀌지 않습니다') + '">') +
+    (isNew ? '' :
+      '<div class="field inline"><input type="checkbox" id="f-off"' +
+      (a.status === '정지' ? ' checked' : '') + '><label for="f-off">사용 중지</label></div>') +
+    field('메모', '<input id="f-memo" value="' + esc(a.memo) + '">'),
+    function () {
+      var name = $('#f-name').value.trim();
+      if (!name) { toast('이름을 입력해 주세요.', true); return false; }
+      var pw = $('#f-pw').value;
+      if (isNew && pw.length < 4) { toast('비밀번호를 4자 이상으로 정해 주세요.', true); return false; }
+
+      return api('saveAccount', { account: {
+        id: a.id, name: name,
+        role: $('#f-role').value,
+        mokjang: $('#f-mokjang').value.trim(),
+        soon: $('#f-soon').value.trim(),
+        password: pw || '',
+        status: ($('#f-off') && $('#f-off').checked) ? '정지' : '사용',
+        memo: $('#f-memo').value.trim()
+      }}).then(function () {
+        toast(isNew ? '계정을 만들었습니다.' : '저장했습니다.');
+        return sync(false);
+      });
+    },
+    isNew || a.id === me().id ? null : function () {
+      if (!confirm(a.name + ' 님의 계정을 지울까요?')) return false;
+      return api('deleteAccount', { id: a.id }).then(function () {
+        toast('삭제했습니다.');
+        return sync(false);
+      });
+    }
+  );
+  if (isNew) setTimeout(function () { $('#f-name').focus(); }, 80);
+}
+
+
+/* ══════════════════════ 설정 메뉴 ══════════════════════ */
+function menuSheet() {
+  var m = me();
+  openSheet(
+    '설정</h3>' +
+    '<div class="card" style="margin-bottom:14px"><div class="row">' +
+      '<div><div class="nm">' + esc(m.name || '') + '</div>' +
+      '<div class="sub">' + esc(m.role || '') + ' · ' + esc(m.scope || '') + '</div></div>' +
+    '</div></div>' +
+    '<div class="field"><button class="btn-primary" id="mn-pw" type="button" ' +
+      'style="background:var(--card);color:var(--ink);border:1px solid var(--line)">' +
+      '비밀번호 바꾸기</button></div>' +
+    '<div class="field"><button class="btn-primary" id="mn-out" type="button" ' +
+      'style="background:var(--card);color:var(--danger);border:1px solid var(--line)">' +
+      '로그아웃</button></div>' +
+    '<p class="scope-tag" style="text-align:center;margin-top:14px">' +
+      '자료는 구글 시트에 저장됩니다. 시트를 직접 열어 고쳐도 그대로 반영됩니다.</p>',
+    null, null, true
+  );
+
+  $('#mn-pw').addEventListener('click', passwordForm);
+  $('#mn-out').addEventListener('click', function () {
+    if (confirm('로그아웃할까요?')) logout();
+  });
+}
+
+function passwordForm() {
+  openSheet(
+    '비밀번호 바꾸기</h3>' +
+    field('지금 비밀번호', '<input id="f-cur" type="password" autocomplete="current-password">') +
+    field('새 비밀번호', '<input id="f-new" type="password" autocomplete="new-password" ' +
+          'placeholder="4자 이상">') +
+    field('새 비밀번호 확인', '<input id="f-new2" type="password" autocomplete="new-password">'),
+    function () {
+      var cur = $('#f-cur').value, a = $('#f-new').value, b = $('#f-new2').value;
+      if (a.length < 4) { toast('새 비밀번호는 4자 이상이어야 합니다.', true); return false; }
+      if (a !== b) { toast('새 비밀번호가 서로 다릅니다.', true); return false; }
+      return api('changePassword', { current: cur, next: a }).then(function () {
+        toast('비밀번호를 바꿨습니다.');
+      });
+    }
+  );
+  setTimeout(function () { $('#f-cur').focus(); }, 80);
+}
+
+
+/* ══════════════════════ 공통 부품 ══════════════════════ */
+function field(label, inner) {
+  return '<div class="field"><label>' + esc(label) + '</label>' + inner + '</div>';
+}
+
+function select(id, options, current) {
+  return '<select id="' + id + '">' + (options || []).map(function (o) {
+    return '<option value="' + esc(o) + '"' + (o === current ? ' selected' : '') + '>' +
+      (o === '' ? '선택 안 함' : esc(o)) + '</option>';
+  }).join('') + '</select>';
+}
+
+function datalist(id, values) {
+  return '<datalist id="' + id + '">' + (values || []).map(function (v) {
+    return '<option value="' + esc(v) + '">';
+  }).join('') + '</datalist>';
+}
+
+function memberSelect(id, currentId, currentName, blankLabel) {
+  var h = '<select id="' + id + '"><option value=""' + (!currentId ? ' selected' : '') + '>' +
+    esc(blankLabel || '선택해 주세요') + '</option>';
+  var found = false;
+  state.data.members.forEach(function (m) {
+    if (m.id === currentId) found = true;
+    h += '<option value="' + esc(m.id) + '"' + (m.id === currentId ? ' selected' : '') + '>' +
+      esc(m.name) + (groupOf(m) ? ' (' + esc(groupOf(m)) + ')' : '') + '</option>';
+  });
+  if (currentId && !found) {
+    h += '<option value="' + esc(currentId) + '" selected>' + esc(currentName || '(명단 밖)') + '</option>';
+  }
+  return h + '</select>';
+}
+
+function addFab(onClick) {
+  var old = $('.fab');
+  if (old) old.remove();
+  var b = document.createElement('button');
+  b.className = 'fab';
+  b.type = 'button';
+  b.setAttribute('aria-label', '새로 추가');
+  b.textContent = '+';
+  b.addEventListener('click', onClick);
+  document.body.appendChild(b);
+}
+
+/**
+ * 아래에서 올라오는 시트 모달.
+ * onSave / onDelete 가 Promise 를 돌려주면 끝날 때까지 버튼이 잠깁니다.
+ * false 를 돌려주면 시트를 닫지 않습니다.
+ */
+function openSheet(innerHtml, onSave, onDelete, closeOnly) {
+  var panel = $('#sheet-panel');
+  panel.innerHTML = '<div class="grab"></div><h3>' + innerHtml +
+    '<div class="actions">' +
+      (onDelete ? '<button class="del" id="sh-del">🗑</button>' : '') +
+      '<button class="cancel" data-close>' + (closeOnly ? '닫기' : '취소') + '</button>' +
+      (closeOnly ? '' : '<button class="save" id="sh-save">저장</button>') +
+    '</div>';
+  $('#sheet').hidden = false;
+  document.body.style.overflow = 'hidden';
+
+  if (onSave) $('#sh-save').addEventListener('click', function () { run(this, onSave); });
+  if (onDelete) $('#sh-del').addEventListener('click', function () { run(this, onDelete); });
+
+  function run(btn, fn) {
+    var r;
+    try { r = fn(); } catch (e) { handleError(e); return; }
+    if (r === false) return;
+    if (r && typeof r.then === 'function') {
+      var label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '…';
+      r.then(function () {
+        closeSheet();
+        render();
+      }).catch(handleError).then(function () {
+        btn.disabled = false;
+        btn.textContent = label;
+      });
+      return;
+    }
+    closeSheet();
+    render();
+  }
+}
+
+function closeSheet() {
+  $('#sheet').hidden = true;
+  $('#sheet-panel').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+/* 시작 */
+go('home');
+boot();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Jekyll 빌드 결과물
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# 로컬에서만 쓰는 의존성 잠금 파일 (GitHub Pages 는 무시합니다)
+Gemfile.lock

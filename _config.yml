@@ -34,9 +34,17 @@ defaults:
       type: posts
     values:
       layout: post
+  # 교회 관리 도구는 검색엔진 색인에서 뺍니다
+  - scope:
+      path: "church"
+    values:
+      sitemap: false
 
 exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
   - vendor
+  # 교회 관리 도구: 화면(index.html)만 올리고 백엔드 코드와 안내서는 제외
+  - church/README.md
+  - church/apps-script
