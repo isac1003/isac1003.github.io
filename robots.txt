@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /church/
 
 # AI 검색엔진 크롤러 명시적 허용
 User-agent: GPTBot
